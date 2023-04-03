@@ -1654,13 +1654,13 @@ Example:
 
     INPUT Body for post: JSON Object
     Example:
-{
-    "coupon_name": "10% off your first purchase",
-    "coupon_code": "FIRST10",
-    "reduction_amount": 10.00,
-    "quantity": 50,
-    "active_status": 1
-}
+    {
+        "coupon_name": "10% off your first purchase",
+        "coupon_code": "FIRST10",
+        "reduction_amount": 10.00,
+        "quantity": 50,
+        "active_status": 1
+    }
 
 <h3>7.Add User Address</h3>
 <ul>
