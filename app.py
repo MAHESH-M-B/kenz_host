@@ -604,40 +604,40 @@ def insert_wholesale_users():
             return jsonify({'return': 'error adding user'+str(e)})
     return jsonify({'return': 'no POST request'})
 
-# @app.route('/insert_users', methods=['POST'])
-# def insert_users():
-#     if request.method == 'POST':
-#         content = request.json
-#         print(content)
-#         try: 
-#             with app.app_context():
-#                 user = Users(ip_address=request.remote_addr, 
-#                     user_type=content['user_type'],
-#                     public_id=str(uuid.uuid4()),
-#                     username=content['username'],
-#                     firstname=content['firstname'],
-#                     lastname=content['lastname'],
-#                     password=generate_password_hash(content['password'], method='sha256'),
-#                     email=content['email'],
-#                     phone=content['phone'],
-#                     created_at=datetime.datetime.now()
-#                 )
-#                 db.session.add(user)
-#                 db.session.commit()
-#                 current_user = Users.query.filter_by(email=content['email']).first()
-#             return jsonify({'return': 'user added successfully',
-#                             'user_id': current_user.id,
-#                             'user_type': current_user.user_type,
-#                             'public_id': current_user.public_id,
-#                             'username': current_user.username,
-#                             'firstname': current_user.firstname,
-#                             'lastname': current_user.lastname,
-#                             'email': current_user.email,
-#                             'phone': current_user.phone,
-#                             'created_at': current_user.created_at})
-#         except Exception as e:
-#             return jsonify({'return': 'error adding user'+str(e)})
-#     return jsonify({'return': 'no POST request'})
+@app.route('/insert_admin', methods=['POST'])
+def insert_admin():
+    if request.method == 'POST':
+        content = request.json
+        print(content)
+        try: 
+            with app.app_context():
+                user = Users(ip_address=request.remote_addr, 
+                    user_type=content['user_type'],
+                    public_id=str(uuid.uuid4()),
+                    username=content['username'],
+                    firstname=content['firstname'],
+                    lastname=content['lastname'],
+                    password=generate_password_hash(content['password'], method='sha256'),
+                    email=content['email'],
+                    phone=content['phone'],
+                    created_at=datetime.datetime.now()
+                )
+                db.session.add(user)
+                db.session.commit()
+                current_user = Users.query.filter_by(email=content['email']).first()
+            return jsonify({'return': 'user added successfully',
+                            'user_id': current_user.id,
+                            'user_type': current_user.user_type,
+                            'public_id': current_user.public_id,
+                            'username': current_user.username,
+                            'firstname': current_user.firstname,
+                            'lastname': current_user.lastname,
+                            'email': current_user.email,
+                            'phone': current_user.phone,
+                            'created_at': current_user.created_at})
+        except Exception as e:
+            return jsonify({'return': 'error adding user'+str(e)})
+    return jsonify({'return': 'no POST request'})
 
 # dev2
 # @app.route('/insert_users', methods=['POST'])
@@ -671,29 +671,29 @@ def insert_wholesale_users():
 
 
 
-# @app.route('/sign_in', methods=['GET', 'POST'])
-# def sign_in():
+@app.route('/sign_in', methods=['GET', 'POST'])
+def sign_in():
     
-#     if request.method == 'POST':
-#         content = request.json
-#         if not content or not content['email'] or not content['password']:
-#             return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+    if request.method == 'POST':
+        content = request.json
+        if not content or not content['email'] or not content['password']:
+            return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
-#         user = Users.query.filter_by(email=content['email']).first()
+        user = Users.query.filter_by(email=content['email']).first()
 
-#         if not user:
-#             return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+        if not user:
+            return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
-#         if check_password_hash(user.password, content['password']):
-#             token = jwt.encode({'public_id': user.public_id}, app.config['SECRET_KEY'])
-#             user.ip_address = request.remote_addr
-#             db.session.commit()
+        if check_password_hash(user.password, content['password']):
+            token = jwt.encode({'public_id': user.public_id}, app.config['SECRET_KEY'])
+            user.ip_address = request.remote_addr
+            db.session.commit()
 
-#             return jsonify({'token' : token.decode('UTF-8'), 'user_id': user.id, 'phone' : user.phone, 'is_verified' : user.verified_user}) 
+            return jsonify({'token' : token.decode('UTF-8'), 'user_id': user.id, 'phone' : user.phone, 'is_verified' : user.verified_user}) 
     
-#         return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
-#     else:
-#         return jsonify({'return': 'no POST request'})
+        return make_response('could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+    else:
+        return jsonify({'return': 'no POST request'})
 
 
 
