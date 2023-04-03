@@ -1810,3 +1810,81 @@ Example:
         "return": "success"
     }
 </ul>
+
+
+
+<h3>Sign In User</h3>
+<ul>
+    <p>Sign in a user using phone number</p>
+    <p>URL: /sign_in</p>
+    <p>Method: POST</p>
+    <p>URL Content-Type: JSON</p>
+
+        Example Input body:
+        {
+            "phone" :1233443123
+        }
+
+        Example Response body:
+        {
+            "is_verified": False,
+            "phone": "1233443123",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiIzZmU3ZDlkOC1jZTlhLTRhNmQtOTIwZS0xYjA1ZGIwOTU3ZjMifQ.wMpnikIZzeCcV0sKcZ2LGkmnAoMpsmOKklYa8qV4110",
+            "user_id": 1
+        }
+</ul>
+
+
+
+<h3>Insert normal User</h3>
+<ul>
+    <p>Insert a new user into the database</p>
+    <p>URL: /insert_users</p>
+    <p>Method: POST</p>
+    <p>URL Content-Type: JSON</p>
+
+        Example Input body:
+        {
+            "phone" :  "1234567890"
+        }
+
+        Example Response body:
+        {
+            "is_verified": false,
+            "phone": "123456789023423124",
+            "return": "user added successfully",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiI3M2I5NzdiMC02ZTZiLTQ2ZTYtOTY5Zi1jY2M2MjVjNzU0ZmIifQ.MQkIbrnlap3XuRR2pPVn5UgwSF_ajziGuk3vP8eJAJM",
+            "user_id": 1,
+
+        }
+
+</ul>
+
+
+<h3>Insert wholesale User</h3>
+<ul>
+    <p>Insert a new user into the database</p>
+    <p>URL: /insert_users</p>
+    <p>Method: POST</p>
+    <p>URL Content-Type: JSON</p>
+
+        Example Input body:
+        {
+            "username": "john_doe1",
+            "email": "john_doe@example1.com",
+            "phone": "1234567890234231"
+        }
+
+        Example Response body:
+        {
+            "created_at": "2023-04-03 17:08:39.925064",
+            "email": "john_doe@example1.com",
+            "phone": "1234567890234231",
+            "public_id": "d4fedcfb-3353-4408-9faf-c9614929129d",
+            "return": "user added successfully",
+            "user_id": 8,
+            "user_type": "wholesale",
+            "username": "john_doe1"
+        }
+
+</ul>
