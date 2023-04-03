@@ -451,7 +451,7 @@ class Coupon(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     active_status = db.Column(db.Boolean, nullable=False)
     created_at = db.Column(db.DateTime, nullable=True)
-    price_reduction = db.Column(db.Float, nullable=False)
+    # price_reduction = db.Column(db.Float, nullable=False)
 
 
 
@@ -913,6 +913,7 @@ def get_user_addr_by_id(jwt_current_user, id):
             if user_addr:
                 return jsonify({'return': 'success', 'message': 'address fetched', 'data': {
                     'id': user_addr.id,
+                    'name': user_addr.name,
                     'address_line1': user_addr.address_line1,
                     'address_line2': user_addr.address_line2,
                     'city': user_addr.city,
@@ -945,6 +946,7 @@ def update_user_addr(jwt_current_user, id):
                 user_addr.city = data['city']
                 user_addr.postal_code = data['postal_code']
                 user_addr.country = data['country']
+                user_addr.name = data['name']
                 user_addr.telephone = data['telephone']
                 user_addr.mobile = data['mobile']
                 user_addr.latitude = data['latitude']
@@ -3387,8 +3389,8 @@ def add_coupon():
         coupon_code=data['coupon_code'],
         reduction_amount=data['reduction_amount'],
         quantity=data['quantity'],
-        active_status=data['active_status'],
-        price_reduction=data['price_reduction']
+        active_status=data['active_status']
+        # price_reduction=data['price_reduction']
     )
     db.session.add(coupon)
     db.session.commit()

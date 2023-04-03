@@ -1510,11 +1510,12 @@
 
 
 
+
+
+
 <h3>updated apis</h3>
 
 <h3>basic url for test":https://epay-apis.herokuapp.com/</h3>
-
-
 <h3>Get all Notifications</h3>
 <ul>
     <p>Get all data from notification table</p>
@@ -1524,22 +1525,365 @@
     
     Response Body: JSON Object
     Example:
+{
+  "data": [
     {
-        "data": [
-            {
-                "id": 1,
-                "image_url": "https://i.imgur.com/mtzqSXZ.png",
-                "message": "qwe",
-                "title": "qwe"
-            },
-            {
-                "id": 2,
-                "image_url": "https://i.imgur.com/hiNtk1w.png",
-                "message": "qweqwe",
-                "title": "wqe"
-            }
-        ],
-        "message": "notifications fetched",
+      "id": 1,
+      "image_url": "https://i.imgur.com/85X0zxa.png",
+      "message": "asdf",
+      "product_id": 1,
+      "title": "asfdasd"
+    },
+    {
+      "id": 2,
+      "image_url": "https://i.imgur.com/YfAn2me.png",
+      "message": "asdf",
+      "product_id": 2,
+      "title": "asdfa"
+    },
+    {
+      "id": 3,
+      "image_url": "https://i.imgur.com/TjVUNWs.png",
+      "message": "asdf",
+      "product_id": 2,
+      "title": "asdfa"
+    }
+  ],
+  "message": "notifications fetched",
+  "return": "success"
+}
+</ul>
+
+
+
+<h3>Get Products</h3>
+<ul>
+    <p>Get all Products based on parm input</p>
+    <p>URL: /get_products</p>
+    <p>Method : GET</p>
+    <p>Parameters : parm, id</p>
+    <ol>
+        <li>parm = {product_id, category_id, subcategory_id, all}</li>
+        <li>id = {id}</li>
+        <p><b>*(parm=all) requires no id</b></p>
+    </ol>
+    <p>Example : https://epay-apis.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast</p>
+
+    Response Body: JSON Object
+    Example:
+   {
+  "products": [
+    {
+      "cat_id": 1,
+      "fast_delivery": "1",
+      "featured": "0",
+      "fresh": "0",
+      "id": 1,
+      "offer": "0",
+      "other_title_ar": "asd",
+      "other_title_en": "SDF",
+      "product_barcode": "655",
+      "product_cat_id": 1,
+      "product_code": "88",
+      "product_desc_ar": "testproduct1",
+      "product_desc_en": "testproduct1",
+      "product_images": [
+        {
+          "id": 1,
+          "product_id": 1,
+          "product_image_url": "https://i.imgur.com/XeTgdWH.png"
+        }
+      ],
+      "product_name_ar": "testproduct1",
+      "product_name_en": "testproduct1",
+      "product_stock": [
+        {
+          "id": 1,
+          "main_rack_no": null,
+          "max_stock": "5",
+          "min_stock": "5",
+          "opening_stock": "68",
+          "product_id": 1,
+          "product_offer_price": "87",
+          "product_price": "87",
+          "product_purchase_price": "8754",
+          "sub_rack_no": null
+        }
+      ],
+      "product_subcat_id": 1,
+      "status": "enable",
+      "subcat_id": 1,
+      "unit_quantity": "1"
+    },
+    {
+      "cat_id": 1,
+      "fast_delivery": "1",
+      "featured": "0",
+      "fresh": "0",
+      "id": 2,
+      "offer": "0",
+      "other_title_ar": "1234",
+      "other_title_en": "1234",
+      "product_barcode": "124",
+      "product_cat_id": 1,
+      "product_code": "345",
+      "product_desc_ar": "testproduct2",
+      "product_desc_en": "testproduct2",
+      "product_images": [
+        {
+          "id": 2,
+          "product_id": 2,
+          "product_image_url": "https://i.imgur.com/sthURYQ.png"
+        }
+      ],
+      "product_name_ar": "testproduct2",
+      "product_name_en": "testproduct2",
+      "product_stock": [
+        {
+          "id": 2,
+          "main_rack_no": null,
+          "max_stock": "234",
+          "min_stock": "23",
+          "opening_stock": "234",
+          "product_id": 2,
+          "product_offer_price": "65",
+          "product_price": "54",
+          "product_purchase_price": "234",
+          "sub_rack_no": null
+        }
+      ],
+      "product_subcat_id": 1,
+      "status": "enable",
+      "subcat_id": 1,
+      "unit_quantity": "87"
+    }
+  ],
+  "return": "success"
+}
+
+</ul>
+
+
+<h3>Delivery charge </h3>
+<ul>
+    <p>Post Delivery charge based on pincode</p>
+    <p>URL: /delivery_charges</p>
+    <p>Method : POST</p>
+    <p>Example : https://epay-apis.herokuapp.com/delivery_charges</p>
+    
+    INPUT Body for post: JSON Object
+    Example:
+{
+    "location_name": "Example City",
+    "location_zipcode": "12345",
+    "normal_charge": 5.00,
+    "fast_charge": 10.00,
+    "active_status": true
+}
+
+<p>Get Delivery charge based on pincode</p>
+<p>Method : GET</p>
+<p>Example : https://epay-apis.herokuapp.com/delivery_charges?zipcode=12345</p>
+Respose body from get:JSON Object
+Example:
+{
+  "fast_charge": 9.99,
+  "normal_charge": 5.99,
+  "zipcode": 12345
+}
+
+</ul>
+
+
+<h3>apply coupon</h3>
+<ul>
+    <p>apply_coupon</p>
+    <p>URL: /apply_coupon</p>
+    <p>Method : POST</p>
+    <p>Example : https://epay-apis.herokuapp.com/apply_coupon</p>
+    
+    INPUT Body for post: JSON Object
+    Example:
+{
+    "coupon_code": "EXAMPLECOUPON",
+    "price": 50.00
+}
+
+
+
+<h3>add coupon</h3>
+<ul>
+    <p>/coupons</p>
+    <p>URL: /coupons</p>
+    <p>Method : POST</p>
+    <p>Example : https://epay-apis.herokuapp.com/coupons</p>
+    
+    INPUT Body for post: JSON Object
+    Example:
+{
+    "coupon_name": "10% off your first purchase",
+    "coupon_code": "FIRST10",
+    "reduction_amount": 10.00,
+    "quantity": 50,
+    "active_status": 1
+}
+
+
+
+<h3>Add User Address</h3>
+<ul>
+    <p>Add a new address for a user</p>
+    <p>URL: /user_addr</p>
+    <p>Method: POST</p>
+    <p>URL Content-Type: JSON</p>
+    <p>Example : https://epay-apis.herokuapp.com/user_addr</p>
+    
+       
+        Example Input body:
+        {
+            'address_line1': "address_line1",
+            'name': "name",
+            'address_line2': "address_line2",
+            'city': "cityxyz",
+            'postal_code': "123456",
+            'country': "countryxyz",
+            'telephone': "1234567890",
+            'mobile': "1234567890",
+            'latitude': '10.995003718149182', 
+            'longitude': '76.99166976233744'
+        }
+</ul>
+
+<h3>Get All User Address</h3>
+<ul>
+    <p>Get all address for a user</p>
+    <p>URL: /user_addr</p>
+    <p>Method: GET</p>
+    <p>Example : https://epay-apis.herokuapp.com/user_addr</p>
+    
+       
+        Example Response body:
+        {
+            'id': 1,
+            'name':"samplename"
+            'address_line1': "address_line123",
+            'address_line2': "address_line123",
+            'city': "cityxyz",
+            'postal_code': "123456",
+            'country': "countryxyz",
+            'telephone': "1234567890",
+            'mobile':   "1234567890",
+            'latitude':  '10.995003718149182',
+            'longitude': '76.99166976233744',
+            'created_at':  '2021-08-03T09:00:00.000Z',
+            'modified_at': '2021-08-03T09:00:00.000Z',
+            'user_id': 1
+        }
+</ul>
+
+<h3>Get User Address with id</h3>
+<ul>
+    <p>Get a address for a user</p>
+    <p>URL: /user_addr/{id}</p>
+    <p>Method: GET</p>
+    <p>Example : https://epay-apis.herokuapp.com/user_addr/1</p>
+    
+       
+        Example Response body:
+        {
+            'id': 1,
+            'name':"samplename"
+            'address_line1': "address_line123",
+            'address_line2': "address_line123",
+            'city': "cityxyz",
+            'postal_code': "123456",
+            'country': "countryxyz",
+            'telephone': "1234567890",
+            'mobile':   "1234567890",
+            'latitude':  '10.995003718149182',
+            'longitude': '76.99166976233744',
+            'created_at':  '2021-08-03T09:00:00.000Z',
+            'modified_at': '2021-08-03T09:00:00.000Z',
+            'user_id': 1
+        }
+</ul>
+
+<h3>Update User Address</h3>
+<ul>
+    <p>Update a address for a user</p>
+    <p>URL: /user_addr/{id}</p>
+    <p>Method: PUT</p>
+    <p>URL Content-Type: JSON</p>
+    <p>Example : https://epay-apis.herokuapp.com/user_addr/1</p>
+    
+       
+        Example Input body:
+        {
+            'name':"samplename",
+            'address_line1': "address_line112",
+            'address_line2': "address_line2223",
+            'city': "cityxyz12",
+            'postal_code': "123456213",
+            'country': "countryxyz13",
+            'telephone': "1234522890",
+            'mobile': "1234567220",
+            'latitude': '10.99500312312718149182', 
+            'longitude': '76.99166976212333744'
+        }
+
+</ul>
+
+
+
+<h3>Place Order</h3>
+<ul>
+    <p>Place an order, all items in cart will be deleted and moved to order</p>
+    <p>URL: /order/{user_addr_id}</p>
+    <p>Method : POST</p>
+    <p>Parameters : </p>
+    <p>Example : https://epay-apis.herokuapp.com/order/1</p>
+
+    Example Input:
+{
+    "delivery_type": "door delivery",
+    "delivery_time": "2023-04-10 10:00:00",
+    "transaction_id": "1234abcd"
+}
+
+
+    Response Body: JSON Object
+    Example:
+    {
+        "message": "order placed",
+        "return": "success"
+    }
+</ul>
+
+
+
+<h3>Get specific Order</h3>
+<ul>
+    <p>Get a specific order with order id</p>
+    <p>URL: /order/{order_id}</p>
+    <p>Method : GET</p>
+    <p>Parameters : order_id</p>
+    <p>Example : https://epay-apis.herokuapp.com/order/1</p>
+
+    Response Body: JSON Object
+    Example:
+    {
+        "data": {
+            "id": 1,
+            "total_price":234234,
+            "total_quantity":3,
+            "address_id":1,
+            "status":"pending"
+            "created_at": "Sun, 18 Dec 2022 04:05:54 GMT",
+            "modified_at": "Sun, 18 Dec 2022 04:05:54 GMT",
+            "delivery_time": "Sun, 18 Dec 2022 04:05:54",
+            "delivery_type": "door delivery",
+        },
+        "message": "order fetched",
         "return": "success"
     }
 </ul>
