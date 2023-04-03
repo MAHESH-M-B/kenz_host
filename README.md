@@ -1467,33 +1467,33 @@
 
     Response Body: JSON Object
     Example:
-{
-  "data": [
     {
-      "id": 1,
-      "image_url": "https://i.imgur.com/85X0zxa.png",
-      "message": "asdf",
-      "product_id": 1,
-      "title": "asfdasd"
-    },
-    {
-      "id": 2,
-      "image_url": "https://i.imgur.com/YfAn2me.png",
-      "message": "asdf",
-      "product_id": 2,
-      "title": "asdfa"
-    },
-    {
-      "id": 3,
-      "image_url": "https://i.imgur.com/TjVUNWs.png",
-      "message": "asdf",
-      "product_id": 2,
-      "title": "asdfa"
+        "data": [
+            {
+        "id": 1,
+        "image_url": "https://i.imgur.com/85X0zxa.png",
+        "message": "asdf",
+        "product_id": 1,
+        "title": "asfdasd"
+            },
+            {
+        "id": 2,
+        "image_url": "https://i.imgur.com/YfAn2me.png",
+        "message": "asdf",
+        "product_id": 2,
+        "title": "asdfa"
+            },
+            {
+        "id": 3,
+        "image_url": "https://i.imgur.com/TjVUNWs.png",
+        "message": "asdf",
+        "product_id": 2,
+        "title": "asdfa"
+            }
+        ],
+        "message": "notifications fetched",
+        "return": "success"
     }
-  ],
-  "message": "notifications fetched",
-  "return": "success"
-}
 </ul>
 
 <h3>Get Products</h3>
