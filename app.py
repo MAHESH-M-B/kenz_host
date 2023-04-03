@@ -1553,9 +1553,12 @@ def get_products():
             category_id = request.args.get('category_id')
             subcategory_id = request.args.get('subcategory_id')
             delivery_type = request.args.get('delivery_type')
+            product_id = request.args.get('product_id')
 
             # Query products based on parameters
             query = Products.query
+            if product_id:  # Add a filter for product ID
+                query = query.filter_by(id=product_id)
             if category_id:
                 query = query.filter_by(cat=category_id)
             if subcategory_id:
