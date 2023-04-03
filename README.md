@@ -1640,10 +1640,10 @@ Example:
 
     INPUT Body for post: JSON Object
     Example:
-{
-    "coupon_code": "EXAMPLECOUPON",
-    "price": 50.00
-}
+    {
+        "coupon_code": "EXAMPLECOUPON",
+        "price": 50.00
+    }
 
 <h3>6.add coupon</h3>
 <ul>
