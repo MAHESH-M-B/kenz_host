@@ -1890,7 +1890,7 @@ Example:
 </ul>
 
 
-
+<p>use this as insert admin and login to admin panel </P>
 <h3>Insert admin</h3>
 <ul>
     <p>Insert a new user into the database</p>
