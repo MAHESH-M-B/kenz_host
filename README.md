@@ -1563,9 +1563,7 @@
     <p>Method : GET</p>
     <p>Parameters : parm, id</p>
     <ol>
-        <li>parm = {product_id, category_id, subcategory_id, all}</li>
-        <li>id = {id}</li>
-        <p><b>*(parm=all) requires no id</b></p>
+        <li>parm = {product_id, category_id, subcategory_id,delivery_type}</li>
     </ol>
     <p>Example : https://epay-apis.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast</p>
 
