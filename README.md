@@ -1507,4 +1507,39 @@
         "return": "success"
     }
 </ul>
-"# kenz_host" 
+
+
+
+<h3>updated apis</h3>
+
+<h3>basic url for test":https://epay-apis.herokuapp.com/</h3>
+
+
+<h3>Get all Notifications</h3>
+<ul>
+    <p>Get all data from notification table</p>
+    <p>URL: /notifications</p>
+    <p>Method : GET</p>
+    <p>Example : https://epay-apis.herokuapp.com/notifications</p>
+    
+    Response Body: JSON Object
+    Example:
+    {
+        "data": [
+            {
+                "id": 1,
+                "image_url": "https://i.imgur.com/mtzqSXZ.png",
+                "message": "qwe",
+                "title": "qwe"
+            },
+            {
+                "id": 2,
+                "image_url": "https://i.imgur.com/hiNtk1w.png",
+                "message": "qweqwe",
+                "title": "wqe"
+            }
+        ],
+        "message": "notifications fetched",
+        "return": "success"
+    }
+</ul>
