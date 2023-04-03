@@ -1458,7 +1458,7 @@
 <h3>updated apis</h3>
 
 <h3>basic url for test":https://epay-apis.herokuapp.com/</h3>
-<h3>Get all Notifications</h3>
+<h3>1.Get all Notifications</h3>
 <ul>
     <p>Get all data from notification table</p>
     <p>URL: /notifications</p>
@@ -1496,7 +1496,7 @@
     }
 </ul>
 
-<h3>Get Products</h3>
+<h3>2.Get Products</h3>
 <ul>
     <p>Get all Products based on parm input</p>
     <p>URL: /get_products</p>
@@ -1601,7 +1601,7 @@
 
 </ul>
 
-<h3>Delivery charge </h3>
+<h3>3.Delivery charge </h3>
 <ul>
     <p>Post Delivery charge based on pincode</p>
     <p>URL: /delivery_charges</p>
@@ -1610,15 +1610,15 @@
 
     INPUT Body for post: JSON Object
     Example:
-{
-    "location_name": "Example City",
-    "location_zipcode": "12345",
-    "normal_charge": 5.00,
-    "fast_charge": 10.00,
-    "active_status": true
-}
+    {
+        "location_name": "Example City",
+        "location_zipcode": "12345",
+        "normal_charge": 5.00,
+        "fast_charge": 10.00,
+        "active_status": true
+    }
 
-<p>Get Delivery charge based on pincode</p>
+<p>4.Get Delivery charge based on pincode</p>
 <p>Method : GET</p>
 <p>Example : https://epay-apis.herokuapp.com/delivery_charges?zipcode=12345</p>
 Respose body from get:JSON Object
@@ -1631,7 +1631,7 @@ Example:
 
 </ul>
 
-<h3>apply coupon</h3>
+<h3>5.apply coupon</h3>
 <ul>
     <p>apply_coupon</p>
     <p>URL: /apply_coupon</p>
@@ -1645,7 +1645,7 @@ Example:
     "price": 50.00
 }
 
-<h3>add coupon</h3>
+<h3>6.add coupon</h3>
 <ul>
     <p>/coupons</p>
     <p>URL: /coupons</p>
@@ -1662,7 +1662,7 @@ Example:
     "active_status": 1
 }
 
-<h3>Add User Address</h3>
+<h3>7.Add User Address</h3>
 <ul>
     <p>Add a new address for a user</p>
     <p>URL: /user_addr</p>
@@ -1685,7 +1685,7 @@ Example:
         }
 </ul>
 
-<h3>Get All User Address</h3>
+<h3>8.Get All User Address</h3>
 <ul>
     <p>Get all address for a user</p>
     <p>URL: /user_addr</p>
@@ -1711,7 +1711,7 @@ Example:
         }
 </ul>
 
-<h3>Get User Address with id</h3>
+<h3>9.Get User Address with id</h3>
 <ul>
     <p>Get a address for a user</p>
     <p>URL: /user_addr/{id}</p>
@@ -1737,7 +1737,7 @@ Example:
         }
 </ul>
 
-<h3>Update User Address</h3>
+<h3>10.Update User Address</h3>
 <ul>
     <p>Update a address for a user</p>
     <p>URL: /user_addr/{id}</p>
@@ -1761,7 +1761,7 @@ Example:
 
 </ul>
 
-<h3>Place Order</h3>
+<h3>11.Place Order</h3>
 <ul>
     <p>Place an order, all items in cart will be deleted and moved to order</p>
     <p>URL: /order/{user_addr_id}</p>
@@ -1770,11 +1770,11 @@ Example:
     <p>Example : https://epay-apis.herokuapp.com/order/1</p>
 
     Example Input:
-{
-    "delivery_type": "door delivery",
-    "delivery_time": "2023-04-10 10:00:00",
-    "transaction_id": "1234abcd"
-}
+    {
+        "delivery_type": "door delivery",
+        "delivery_time": "2023-04-10 10:00:00",
+        "transaction_id": "1234abcd"
+    }
 
     Response Body: JSON Object
     Example:
@@ -1784,7 +1784,7 @@ Example:
     }
 </ul>
 
-<h3>Get specific Order</h3>
+<h3>12.Get specific Order</h3>
 <ul>
     <p>Get a specific order with order id</p>
     <p>URL: /order/{order_id}</p>
