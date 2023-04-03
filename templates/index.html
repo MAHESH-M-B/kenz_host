@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Kenz Food Admin Page</h1>
+        <p style="text-align: center;">Welcome back <b>{{ user.username }}</b></p>
+        <h3 style="text-align: center;">Select a Category:</h3>
+    </div>
+</div>
+
+
+
+<div class="container">
+
+
+  {% for cat in productCategory %}
+    <div class="panel {{ cat.category_name_en }}" style="background-image:url('{{ cat.category_image_url }}')">
+        <a href="{{url_for('viewProductSubCategory', id=cat.id, name=cat.category_name_en)}}"  style="color: #fff; size: 0ch" disabled><h3 class="show">{{ cat.category_name_en }}</h3></a>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap&family=Montserrat:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+h1 {
+  font-family:  'Pacifico', cursive;
+  text-align:center; 
+}
+
+h1 span {
+  padding: 10px;
+  color: #1052a8;
+}
+
+
+#logo {
+  text-decoration: none;
+  color: #1052a8;
+}
+
+.searchForm {
+  text-align: center;
+}
+
+.search {
+  width: 250px;
+  height: 30px;
+  border-radius: 8px;
+  border-style: none;
+  background-color: rgb(243, 243, 243);
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+
+
+.searchBtn {
+  width: 100px;
+  height: 30px;
+  border-radius: 8px;
+  background-color:#1052a8;
+  color: #fff;
+  border-style: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.searchBtn:active {
+  transform: scale(0.9);  
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  max-width: 1400px;
+}
+
+
+.panel {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80vh;
+  border-radius: 20px;
+  color: #fff;
+  text-shadow: 3px 3px 5px #303030;
+  flex: 0.5;
+  margin: 10px;
+  position: relative;
+  transition: flex 1s ease-in;
+  cursor: pointer;
+}
+
+
+.icons {
+  background-color: rgba(0, 0, 0, 0.514);
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+
+.panel h3{
+  font-size: 40px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.247);
+  width: 100%;
+  padding: 50px;
+  border-radius: 20px 20px 0 0;
+  margin: 0;
+  opacity: 0;
+}
+
+
+.panel.active {
+  flex: 5;
+}
+
+.show {
+  display: block;
+}
+
+.panel.active h3, svg {
+  opacity: 1;
+  transition: opacity 0.3s ease-in 1s;
+}
+
+
+@media (min-width: 480px) {
+  .container {
+    width: 90vw;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+</style>
+
+
+<script>
+    const panels = document.querySelectorAll('.panel');
+const fruit = document.querySelector('.fruit');
+const savory = document.querySelector('.savory');
+const pizza = document.querySelector('.pizza');
+const review = document.querySelector('.review');
+const dessert = document.querySelector('.dessert');
+
+const search = document.querySelector('.search');
+
+const searchBtn = document.querySelector('.searchBtn');
+
+
+// click event panel expansion
+panels.forEach((panel) => {
+  panel.addEventListener('click', () => {
+    removeActiveClasses()
+    panel.classList.add('active')
+  });  
+});
+
+// removing activation of panel expansion
+function removeActiveClasses() {
+  panels.forEach(panel => {
+    panel.classList.remove('active');
+  });
+}
+
+//search elements
+const fruitDrink= [
+  'str',
+  'blu',
+  'water',
+  'cof',
+  'cher',
+  'kiw',
+  'hotc',
+  'mil',
+  'ju',
+  'fru',
+  'drin'
+];
+
+const sweets = [
+  'cak',
+  'brea',
+  'muff',
+  'crois',
+  'pastr',
+  'dani'
+];
+
+const savories = [
+  'pa',
+  'spag',
+  'toma',
+  'chee',
+  'garl',
+  'pota',
+  'eg',
+  'ric',
+  'avo',
+  'chic',
+  'bee',
+  'por',
+  'lam',
+  'oli'
+];
+
+const pizzas = [
+  'pepp',
+  'capp',
+  'supr',
+  'meatlo',
+  'veget',
+  'bbq',
+  'marga',
+  'marin',
+  'pizz'
+];
+
+const reviews = [
+  'rest',
+  'revi'
+];
+
+// search value matching against search menu
+const searched = (panelClass, items) => {
+  search.addEventListener('keydown', () => {
+    searchItems(panelClass, items);    
+  })  
+}
+// action upon search result
+const searchItems = (panelClass, items) => {
+  for(let i = 0; i < items.length; i++) {
+    if(search.value.includes(items[i])) {
+      removeActiveClasses()
+      panelClass.classList.add('active');
+    }    
+  }  
+}
+
+
+//prevent search button submission
+searchBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+});
+
+
+//call the searched function 
+searched(fruit, fruitDrink)
+searched(savory, savories)
+searched(dessert, sweets)
+searched(pizza, pizzas)
+searched(review, reviews)
+
+
+
+</script>
+
+{% endblock %}
+
+
+

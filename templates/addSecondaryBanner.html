@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+
+
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 >Add Secondary Banner</h1>
+
+            <form  method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="categoryName">Banner Name</label>
+                    <input type="text" class="form-control" id="banner_name_en" name="banner_name_en" placeholder="Enter Banner Name">
+                </div>
+                
+                
+                <div class="form-group">
+                    <label for="categoryName">Banner Image</label>
+                    <input type="file" class="form-control" id="banner_image_url" name="banner_image_url" placeholder="Upload Banner Image" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Banner Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="banner_desc_en" name="banner_desc_en" placeholder="Enter Banner Discription"></textarea>
+                    
+                </div>
+                
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}

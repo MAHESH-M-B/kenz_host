@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+
+
+
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 >Add a Product to <b style="color:#5365ca;">{{ addSubcat.subcategory_name_en }}</b></h1>
+
+            <form  method="POST" enctype="multipart/form-data">
+               
+                
+                     
+                    <!-- <div class="row align-items-center">
+                        <div class="col-6">
+                            <div class="col-10">
+                                <label for="category">Choose Category:</label>
+                                
+                            </div>
+                        
+                            <div class="col-4" style="text-align: left;"> 
+                                <a href="{{url_for('addProductSubCategory', id=id)}}" class="btn btn-success" id="add-cat" style="text-align: center;">Add Category</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="col-10">
+                               
+                            </div>
+                            <div class="col-7">
+                                <a href="{{url_for('addProductSubCategory', id=id)}}" class="btn btn-success" id="add-subcat" style="text-align: center; display: none;">Add Subcategory</a>
+                            </div>
+                        </div>
+                    </div>
+                         -->
+                   
+                    
+                
+
+                
+                <script>
+                    if('{{ subcat_id }}' == '0'){
+                        console.log('{{ subcat_id }}');
+                    }
+                    
+                    
+                </script>
+                
+
+              
+
+
+
+                <div class="form-group">
+                    <label for="categoryName">Product Name</label>
+                    <input type="text" class="form-control" id="product_name_en" name="product_name_en" placeholder="Enter Product Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Product Name(Arabic)</label>
+                    <input type="text" class="form-control" id="product_name_ar" name="product_name_ar" placeholder="Enter Product Name (Arabic)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoryName">Product Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="product_desc_en" name="product_desc_en" placeholder="Enter Product Discription" required></textarea>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Product Discription(Arabic)</label>
+                    <textarea type="text" class="form-control" id="product_desc_ar" rows="4" cols="50" name="product_desc_ar" placeholder="Enter Product Discription(Arabic)" required></textarea>
+                </div> 
+                <div class="form-group">
+                    <label for="categoryName">Unit</label>
+                    <input type="number" class="form-control" id="unit" rows="4" cols="50" name="unit" placeholder="Enter Product Unit" required>
+                </div> 
+                <div class="form-group">
+                    <label for="categoryName">Unit Quantity</label>
+                    <input type="number" class="form-control" id="unit_quantity" rows="4" cols="50" name="unit_quantity" placeholder="Enter Product Unit Quantity" required>
+                </div> 
+                
+
+                <div class="fileUpload">
+                <br>
+                <h1>Upload Multiple Product Image Files</h1>
+                <hr>   
+                <div id="upload" class="upload">
+                <input type="file" multiple onchange="showFile()" accept="image/*" name="product_image_url" required>
+                </div>
+                <ul id="preview"></ul>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Product Price</label>
+                            <input type="number" class="form-control" id="product_price" rows="4" cols="50"
+                                name="product_price" placeholder="Enter Product Price" required>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Product Offer Price</label>
+                            <input type="number" class="form-control" id="product_offer_price" rows="4" cols="50"
+                                name="product_offer_price" placeholder="Enter Product Offer Price" required>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Product Purchase Price</label>
+                            <input type="number" class="form-control" id="product_purchase_price" rows="4" cols="50"
+                                name="product_purchase_price" placeholder="Enter Product Purchase Price " required>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Opening stock</label>
+                            <input type="number" class="form-control" id="opening_stock" rows="4" cols="50"
+                                name="opening_stock" placeholder="Enter Opening stock" required>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Min Quantity</label>
+                            <input type="number" class="form-control" id="min_stock" rows="4" cols="50" name="min_stock"
+                                placeholder="Enter Min Quantity" required>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Max Quantity</label>
+                            <input type="number" class="form-control" id="max_stock" rows="4" cols="50" name="max_stock"
+                                placeholder="Enter Max Quantity" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Product Code</label>
+                            <input type="text" class="form-control" id="product_code" name="product_code"
+                                placeholder="Enter Product code" required>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="categoryName">Product Barcode</label>
+                            <input type="text" class="form-control" id="product_barcode" name="product_barcode"
+                                placeholder="Enter Product Barcode" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="categoryName">Product Other Title</label>
+                            <input type="text" class="form-control" id="other_title_en" name="other_title_en"
+                                placeholder="Enter Product code" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="categoryName">Product Other Title(Arabic)</label>
+                            <input type="text" class="form-control" id="other_title_ar" name="other_title_ar"
+                                placeholder="Enter Product code" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Product Othrer Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="other_desc_en"
+                        name="other_desc_en" placeholder="Enter Product Discription" required></textarea>
+
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Product Other Discription(Arabic)</label>
+                    <textarea type="text" class="form-control" id="other_desc_ar" rows="4" cols="50"
+                        name="other_desc_ar" placeholder="Enter Product Discription(Arabic)" required></textarea>
+                </div>
+                <div class="row" style="margin-bottom: 2em;">
+                    <div class="col-sm">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_active" name="status" checked>
+
+                            <label class="custom-control-label" for="is_active">Status</label>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_active_fast_delivery"  name="fast_delivery" >
+
+                            <label class="custom-control-label" for="is_active_fast_delivery">Fast delivery</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_active_featured" name="featured" >
+
+                            <label class="custom-control-label" for="is_active_featured">Featured</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_active_fresh" name="fresh" >
+
+                            <label class="custom-control-label" for="is_active_fresh">Fresh</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="is_active_offer" name="offer" >
+                            <label class="custom-control-label" for="is_active_offer">Offer</label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+               
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        
+        </div>
+    </div>
+</div>
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Arimo);
+
+
+
+a {
+  color: blue;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+hr {
+   opacity: .3;
+   margin: 2em 0;
+}
+
+.fileUpload {
+   background: white;
+   padding: 25px;
+   margin: 0 auto;
+}
+
+div#upload {
+   display: inline-block;
+}
+
+input[type="file"] {
+background: #7886d8;
+padding: 15px 230px 18px 20px;
+border-radius: 4px;
+cursor: pointer;
+color: white;
+width: 159px;
+border: 2px solid #3F51B5;
+outline: 0;
+}
+
+ul#preview {
+   list-style: none;
+   margin: 25px auto;
+   padding: 0;
+   display: block;
+   max-width: 600px;
+}
+
+ul#preview li {
+   display: inline-block;
+   margin: 0 10px 10px;
+   max-width: 100px;
+}
+
+ul#preview li img {
+   width: 100%;
+}
+</style>
+
+<script>
+       // Check HTML5 File API Browser Support
+   if (window.File && window.FileList && window.FileReader) {
+       function showFile() {
+           var preview = document.getElementById("preview");
+           var fileInput = document.querySelector("input[type=file]");
+
+           for (var i = 0; i < fileInput.files.length; i++) {
+               var reader = new FileReader();
+               reader.onload = function(readerEvent) {
+                   var listItem = document.createElement("li");
+                   listItem.innerHTML = "<img src='" + readerEvent.target.result + "' />";
+                   preview.append(listItem);
+               }
+               reader.readAsDataURL(fileInput.files[i]);
+           }
+       }
+   } else {
+       alert("Your browser is too old to support HTML5 File API");
+   }
+
+
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+   
+        <h1>Products in <b style="color: #4e73df;">{{ sub_cat.subcategory_name_en }}</b></h1>
+        <div class="row">
+            
+                
+    
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <div class="row">
+                            <div class="col">
+                                <div class="float-left">
+                        <a href="{{url_for('addProductWithSubcat', subcat_id=sub_cat.id)}}" class="btn btn-success" style="text-align: right;">Add Products</a>
+                                </div>
+                                <div class="float-right">
+                                    <form action="/addProducts/execl/{{sub_cat.id}}" method="post" enctype="multipart/form-data" >
+                                        <input type="file" multiple accept="application/execl" name="file" required>
+                                        <button  type="submit" class="btn btn-secondary">Upload <img src="{{ url_for('static', filename='img/execl-icon.png') }}"  style="max-height: 30px;" alt=""></button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" >
+                        <div class="table-responsive"  >
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Name(Arabic)</th>
+                                        <th>Image</th>
+                                        <th>Description</th>
+                                        <th>Description(Arabic)</th>
+                                        <th>Unit</th>
+                                        <th>Unit Quantity</th>
+                                        <th>product_price</th>
+                                        <th>product_offer_price</th>
+                                        <th>product_purchase_price</th>
+                                        <th>opening_stock</th>
+                                        <th>min_stock</th>
+                                        <th>max_stock</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Name</th>
+                                        <th>Name(Arabic)</th>
+                                        <th>Image</th>
+                                        <th>Description</th>
+                                        <th>Description(Arabic)</th>
+                                        <th>Unit</th>
+                                        <th>Unit Quantity</th>
+                                        <th>product_price</th>
+                                        <th>product_offer_price</th>
+                                        <th>product_purchase_price</th>
+                                        <th>opening_stock</th>
+                                        <th>min_stock</th>
+                                        <th>max_stock</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    
+                                    {% for product in prod %}
+                                    <tr>
+                                        <td>
+                                            {% if product.status == "enable" %}
+                                                <button class="status-button" onclick='diableFuc("{{ product.id }}")' title="Click to disable" style="background-color: #22db1b; min-width: 60px;">Enabled</button>
+                                            {% else %}
+                                                <button class="status-button" onclick='enableFuc("{{ product.id }}")' title="Click to enable" style="background-color: #db1b1b; min-width: 60px;">Disabled</button>
+                                            {% endif %}
+                                            
+                                        </td>
+                                        <td>{{product.product_name_en}}</td>
+                                        <td>{{product.product_name_ar}}</td>
+                                        <td>
+                                                {% for image in prod_img %}
+                                                    {% if image.fk_product_id == product.id %}
+                                                        <img src="{{image.product_image_url}}" width="70px" style="margin: 1px;">
+                                                        
+                                                    {% endif %}
+                                                {% endfor %}
+                                            
+                                        </td>
+                                        <td>{{product.product_desc_en}}</td>
+                                        <td>{{product.product_desc_ar}}</td>
+                                        <td>{{product.unit_id}}</td>
+                                        <td>{{product.unit_quantity}}</td>
+                                        {% for stocks in prod_stock %}
+                                            {% if stocks.fk_product_id == product.id %}
+                                                <td>{{stocks.product_price}}</td>
+                                                <td>{{stocks.product_offer_price}}</td>
+                                                <td>{{stocks.product_purchase_price}}</td>
+                                                <td>{{stocks.opening_stock}}</td>
+                                                <td>{{stocks.min_stock}}</td>
+                                                <td>{{stocks.max_stock}}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <td>
+                                            <a href="{{url_for('editProduct', id=product.id, name=product.product_name_en)}}" class="btn btn-warning" style="font-size: x-small; width: fit-content;">Edit</a>
+                                            <a href="{{url_for('deleteProduct', id=product.id)}}" class="btn btn-danger" style="font-size: x-small; width: fit-content;">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                   
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    
+</div>
+
+
+<style>
+   .status-button{
+        background-color: #4e73df;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px;
+        font-size: 12px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+   }
+</style>
+
+<script>
+    function enableFuc(id){
+        $.ajax({
+            url: '/changeProductStatus/enable',
+            type: 'GET',
+            data: {id: id},
+            success: function(response){
+                console.log(response);
+                location.reload();
+            }
+        });
+        alert("Product Enabled");
+    }
+    function diableFuc(id){
+        $.ajax({
+            url: '/changeProductStatus/disable',
+            type: 'GET',
+            data: {id: id},
+            success: function(response){
+                console.log(response);
+                location.reload();
+            }
+        });
+        alert("Product Disabled");
+    }
+</script>
+
+{% endblock %}
+
+

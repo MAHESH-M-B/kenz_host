@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 >Edit {{name}} SubCategory</h1>
+
+            <form  method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="categoryName">SubCategory Name</label>
+                    <input type="text" class="form-control" id="subcategory_name_en" name="subcategory_name_en" placeholder="Enter Category Name" value="{{ prod_subcat.subcategory_name_en }}">
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">SubCategory Name(Arabic)</label>
+                    <input type="text" class="form-control" id="subcategory_name_ar" name="subcategory_name_ar" placeholder="Enter Category Name (Arabic)" value="{{ prod_subcat.subcategory_name_ar }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoryName">SubCategory Image</label>
+                    <input type="file" class="form-control" id="subcategory_image_url" name="subcategory_image_url" placeholder="Upload Category Image" value="{{ prod_subcat.subcategory_image_url }}">
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">SubCategory Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="subcategory_desc_en" name="subcategory_desc_en" placeholder="Enter Category Discription" >{{ prod_subcat.subcategory_desc_en }}</textarea>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">SubCategory Discription(Arabic)</label>
+                    <textarea type="text" class="form-control" id="subcategory_desc_ar" rows="4" cols="50" name="subcategory_desc_ar" placeholder="Enter Category Discription(Arabic)" >{{ prod_subcat.subcategory_desc_ar }}</textarea>
+                </div> 
+               
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}

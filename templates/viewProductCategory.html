@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+   
+        <h1>Product Category</h1>
+        <div class="row">
+    
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <a href="{{url_for('addProductCategory')}}" class="btn btn-success" style="text-align: right;">Add Category</a>
+                    </div>
+                    <div class="card-body" >
+                        <div class="table-responsive"  >
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Name(Arabic)</th>
+                                        <th>Order</th>
+                                        <th>Image</th>
+                                        <th>Description</th>
+                                        <th>Description(Arabic)</th>
+                                        <th>active</th>
+                                        <!-- <th>SubCategorys</th> -->
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Name(Arabic)</th>
+                                        <th>Order</th>
+                                        <th>Image</th>
+                                        <th>Description</th>
+                                        <th>Description(Arabic)</th>
+                                        <th>active</th>
+                                        <!-- <th>SubCategorys</th> -->
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    
+                                    {% for productCategory in prod_cat %}
+                                    <tr>
+                                        <td><a href="{{url_for('viewProductSubCategory', id=productCategory.id, name=productCategory.category_name_en)}}">{{productCategory.category_name_en}}</a></td>
+                                        <td>{{productCategory.category_name_ar}}</td>
+                                        <td>{{productCategory.category_order}}</td>
+                                        <td><div style="text-align: center; "><img src="{{productCategory.category_image_url}}" alt="{{productCategory.category_image_url}}" style="max-width:100px;"></div></td>
+                                        <td>{{productCategory.category_desc_en}}</td>
+                                        <td>{{productCategory.category_desc_ar}}</td>
+                                        <td>{{productCategory.category_active}}</td>
+                                        <!-- <td>
+                                            <a href="{{url_for('addProductSubCategory', id=productCategory.id)}}" class="btn btn-success">Add</a>
+                                            <a href="{{url_for('viewProductSubCategory', id=productCategory.id, name=productCategory.category_name_en)}}" class="btn btn-info">View</a>
+                                        </td> -->
+                                        <td>
+                                            <a href="{{url_for('editProductCategory', id=productCategory.id)}}" class="btn btn-warning" style="font-size: x-small; width: fit-content;">Edit</a>
+                                            <a href="{{url_for('deleteProductCategory', id=productCategory.id)}}" class="btn btn-danger" style="font-size: x-small; width: fit-content;">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                   
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    
+</div>
+{% endblock %}

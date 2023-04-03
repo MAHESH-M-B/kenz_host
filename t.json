@@ -1,0 +1,123 @@
+{
+  "products": [
+      {
+          "cat_id": 1,
+          "fast_delivery": null,
+          "featured": null,
+          "fresh": null,
+          "id": 8,
+          "offer": null,
+          "other_title_ar": null,
+          "other_title_en": null,
+          "product_barcode": null,
+          "product_cat_id": 1,
+          "product_code": null,
+          "product_desc_ar": "23123123",
+          "product_desc_en": "1231231",
+          "product_name_ar": "qweq213",
+          "product_name_en": "asdas123",
+          "product_stock": [
+              {
+                  "id": 21,
+                  "main_rack_no": null,
+                  "max_stock": "123",
+                  "min_stock": "3123",
+                  "opening_stock": "21312",
+                  "product_id": 8,
+                  "product_offer_price": "1231",
+                  "product_price": "1231",
+                  "product_purchase_price": "231123",
+                  "sub_rack_no": null
+              },
+              {
+                  "id": 22,
+                  "main_rack_no": null,
+                  "max_stock": "asd",
+                  "min_stock": "asd",
+                  "opening_stock": "asd",
+                  "product_id": 9,
+                  "product_offer_price": "asda",
+                  "product_price": "sdasd",
+                  "product_purchase_price": "sdas",
+                  "sub_rack_no": null
+              },
+              {
+                  "id": 23,
+                  "main_rack_no": null,
+                  "max_stock": "prod_stock.max_stock",
+                  "min_stock": "prod_stock.min_stock",
+                  "opening_stock": "prod_stock.opening_stock",
+                  "product_id": 9,
+                  "product_offer_price": "prod_stock.product_price",
+                  "product_price": "prod_stock.",
+                  "product_purchase_price": "prod_stock.product_offer_price",
+                  "sub_rack_no": null
+              }
+          ],
+          "product_subcat_id": 1,
+          "status": null,
+          "subcat_id": 1,
+          "unit_quantity": "123"
+      },
+      {
+          "cat_id": 1,
+          "fast_delivery": null,
+          "featured": null,
+          "fresh": null,
+          "id": 9,
+          "offer": null,
+          "other_title_ar": null,
+          "other_title_en": null,
+          "product_barcode": null,
+          "product_cat_id": 1,
+          "product_code": null,
+          "product_desc_ar": "asdasd",
+          "product_desc_en": "dsasd",
+          "product_name_ar": "dasda",
+          "product_name_en": "Test image url 1",
+          "product_stock": [
+              {
+                  "id": 21,
+                  "main_rack_no": null,
+                  "max_stock": "123",
+                  "min_stock": "3123",
+                  "opening_stock": "21312",
+                  "product_id": 8,
+                  "product_offer_price": "1231",
+                  "product_price": "1231",
+                  "product_purchase_price": "231123",
+                  "sub_rack_no": null
+              },
+              {
+                  "id": 22,
+                  "main_rack_no": null,
+                  "max_stock": "asd",
+                  "min_stock": "asd",
+                  "opening_stock": "asd",
+                  "product_id": 9,
+                  "product_offer_price": "asda",
+                  "product_price": "sdasd",
+                  "product_purchase_price": "sdas",
+                  "sub_rack_no": null
+              },
+              {
+                  "id": 23,
+                  "main_rack_no": null,
+                  "max_stock": "prod_stock.max_stock",
+                  "min_stock": "prod_stock.min_stock",
+                  "opening_stock": "prod_stock.opening_stock",
+                  "product_id": 9,
+                  "product_offer_price": "prod_stock.product_price",
+                  "product_price": "prod_stock.",
+                  "product_purchase_price": "prod_stock.product_offer_price",
+                  "sub_rack_no": null
+              }
+          ],
+          "product_subcat_id": 1,
+          "status": null,
+          "subcat_id": 1,
+          "unit_quantity": "asd"
+      }
+  ],
+  "return": "success"
+}

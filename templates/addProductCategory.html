@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+
+
+
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 >Add Product Category</h1>
+
+            <form  method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" class="form-control" id="category_name_en" name="category_name_en" placeholder="Enter Category Name">
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Category Name(Arabic)</label>
+                    <input type="text" class="form-control" id="category_name_ar" name="category_name_ar" placeholder="Enter Category Name (Arabic)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoryName">Category Image</label>
+                    <input type="file" class="form-control" id="category_image_url" name="category_image_url" placeholder="Upload Category Image" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Category Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="category_desc_en" name="category_desc_en" placeholder="Enter Category Discription"></textarea>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Category Discription(Arabic)</label>
+                    <textarea type="text" class="form-control" id="category_desc_ar" rows="4" cols="50" name="category_desc_ar" placeholder="Enter Category Discription(Arabic)"></textarea>
+                </div> 
+               
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}

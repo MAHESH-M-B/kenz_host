@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 >Edit Banner</h1>
+
+            <form  method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="categoryName">Banner Name</label>
+                    <input type="text" class="form-control" id="banner_name_en" name="banner_name_en" placeholder="Enter Banner Name" value="{{ banner.banner_name_en }}">
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Banner Name(Arabic)</label>
+                    <input type="text" class="form-control" id="banner_name_ar" name="banner_name_ar" placeholder="Enter Banner Name (Arabic)" value="{{ banner.banner_name_ar }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoryName">Banner Image</label>
+                    <input type="file" class="form-control" id="banner_image_url" name="banner_image_url" placeholder="Upload Banner Image" >
+                    Current Image <img src="{{banner.banner_image_url}}" alt="" style="max-width:100px;"> 
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Banner Discription</label>
+                    <textarea type="text" class="form-control" rows="4" cols="50" id="banner_desc_en" name="banner_desc_en" placeholder="Enter Banner Discription" >{{ banner.banner_desc_en }}</textarea>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Banner Discription(Arabic)</label>
+                    <textarea type="text" class="form-control" id="banner_desc_ar" rows="4" cols="50" name="banner_desc_ar" placeholder="Enter Banner Discription(Arabic)" >{{ banner.banner_desc_ar }}</textarea>
+                </div> 
+               
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        
+        </div>
+    </div>
+</div>
+{% endblock %}
