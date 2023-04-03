@@ -1509,33 +1509,33 @@
 
     Response Body: JSON Object
     Example:
-   {
-  "products": [
     {
-      "cat_id": 1,
-      "fast_delivery": "1",
-      "featured": "0",
-      "fresh": "0",
-      "id": 1,
-      "offer": "0",
-      "other_title_ar": "asd",
-      "other_title_en": "SDF",
-      "product_barcode": "655",
-      "product_cat_id": 1,
-      "product_code": "88",
-      "product_desc_ar": "testproduct1",
-      "product_desc_en": "testproduct1",
-      "product_images": [
-        {
+        "products": [
+            {
+                "cat_id": 1,
+                "fast_delivery": "1",
+                "featured": "0",
+                "fresh": "0",
+                "id": 1,
+                "offer": "0",
+                "other_title_ar": "asd",
+                "other_title_en": "SDF",
+                "product_barcode": "655",
+                "product_cat_id": 1,
+                "product_code": "88",
+                "product_desc_ar": "testproduct1",
+                "product_desc_en": "testproduct1",
+                "product_images": [
+            {
           "id": 1,
           "product_id": 1,
           "product_image_url": "https://i.imgur.com/XeTgdWH.png"
-        }
-      ],
-      "product_name_ar": "testproduct1",
-      "product_name_en": "testproduct1",
-      "product_stock": [
-        {
+            }
+            ],
+            "product_name_ar": "testproduct1",
+            "product_name_en": "testproduct1",
+            "product_stock": [
+             {
           "id": 1,
           "main_rack_no": null,
           "max_stock": "5",
@@ -1552,9 +1552,9 @@
       "status": "enable",
       "subcat_id": 1,
       "unit_quantity": "1"
-    },
-    {
-      "cat_id": 1,
+            },
+        {
+         "cat_id": 1,
       "fast_delivery": "1",
       "featured": "0",
       "fresh": "0",
@@ -1594,10 +1594,10 @@
       "status": "enable",
       "subcat_id": 1,
       "unit_quantity": "87"
+        }
+        ],
+        "return": "success"
     }
-  ],
-  "return": "success"
-}
 
 </ul>
 
