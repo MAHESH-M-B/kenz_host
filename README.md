@@ -142,7 +142,7 @@
     • /phone
 
 <p>Example:-</p>
-<p>https://kenz-food-api.herokuapp.com/get_users/username?username=admin</p>
+<p>https://kenz-food.herokuapp.com/get_users/username?username=admin</p>
 
     Response Body: JSON Object
     Example:
@@ -175,7 +175,7 @@
     <p>URL: /get_user/current</p>
     <p>Method: GET</p>
     <p>Headers: x-access-token</p>
-    <p>https://kenz-food-api.herokuapp.com/get_user/current</p>
+    <p>https://kenz-food.herokuapp.com/get_user/current</p>
 
         Example Response body:
         {
@@ -207,7 +207,7 @@
     <p>URL: /user_addr</p>
     <p>Method: POST</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/user_addr</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr</p>
 
         Example Input body:
         {
@@ -228,7 +228,7 @@
     <p>Get all address for a user</p>
     <p>URL: /user_addr</p>
     <p>Method: GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/user_addr</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr</p>
 
         Example Response body:
         {
@@ -253,7 +253,7 @@
     <p>Get a address for a user</p>
     <p>URL: /user_addr/{id}</p>
     <p>Method: GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/user_addr/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr/1</p>
 
         Example Response body:
         {
@@ -279,7 +279,7 @@
     <p>URL: /user_addr/{id}</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/user_addr/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr/1</p>
 
         Example Input body:
         {
@@ -302,7 +302,7 @@
     <p>URL: /update_password/{id}</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/update_password/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/update_password/1</p>
 
         Example Input body:
         {   
@@ -330,7 +330,7 @@
     <p>URL: /update_user</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: multipart/form-data</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/update_user</p>
+    <p>Example : https://kenz-food.herokuapp.com/update_user</p>
 
         Example Input Keys(All are required): 
         ['firstname'] ('String')
@@ -347,7 +347,7 @@
     <p>URL: /verify/{id}</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/verify/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/verify/1</p>
 
         Example Input body:
         {
@@ -361,7 +361,7 @@
     <p>Check a verification for a user</p>
     <p>URL: /verify/{id}</p>
     <p>Method: GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/verify/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/verify/1</p>
 
         Example Response body:
         {
@@ -377,7 +377,7 @@
     <p>URL: /user_deactivate</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/user_deactivate</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_deactivate</p>
 
        Example Input body:
         {
@@ -398,7 +398,7 @@
     <p>Get all data from banner table</p>
     <p>URL: /banner</p>
     <p>Method : GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/banner</p>
+    <p>Example : https://kenz-food.herokuapp.com/banner</p>
 
     Response Body: JSON Object
     Example:
@@ -422,7 +422,7 @@
     <p>Get all data from secondary banner table</p>
     <p>URL: /secondary_banner</p>
     <p>Method : GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/secondary_banner</p>
+    <p>Example : https://kenz-food.herokuapp.com/secondary_banner</p>
 
     Response Body: JSON Object
     Example:
@@ -446,7 +446,7 @@
     <p>Get all data from notification table</p>
     <p>URL: /notifications</p>
     <p>Method : GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/notifications</p>
+    <p>Example : https://kenz-food.herokuapp.com/notifications</p>
 
     Response Body: JSON Object
     Example:
@@ -477,7 +477,7 @@
     <p>Get all data from category table</p>
     <p>URL: /get_categories</p>
     <p>Method : GET</p>
-    <p>Example : https://kenz-food-api.herokuapp.com/get_categories</p>
+    <p>Example : https://kenz-food.herokuapp.com/get_categories</p>
 
     Response Body: JSON Object
     Example:
@@ -1457,13 +1457,13 @@
 
 <h3>updated apis</h3>
 
-<h3>basic url for test":https://epay-apis.herokuapp.com/</h3>
+<h3>basic url for test":https://kenz-food.herokuapp.com/</h3>
 <h3>1.Get all Notifications</h3>
 <ul>
     <p>Get all data from notification table</p>
     <p>URL: /notifications</p>
     <p>Method : GET</p>
-    <p>Example : https://epay-apis.herokuapp.com/notifications</p>
+    <p>Example : https://kenz-food.herokuapp.com/notifications</p>
 
     Response Body: JSON Object
     Example:
@@ -1505,7 +1505,7 @@
     <ol>
         <li>parm = {product_id, category_id, subcategory_id,delivery_type}</li>
     </ol>
-    <p>Example : https://epay-apis.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast</p>
+    <p>Example : https://kenz-food.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast</p>
 
     Response Body: JSON Object
     Example:
@@ -1606,7 +1606,7 @@
     <p>Post Delivery charge based on pincode</p>
     <p>URL: /delivery_charges</p>
     <p>Method : POST</p>
-    <p>Example : https://epay-apis.herokuapp.com/delivery_charges</p>
+    <p>Example : https://kenz-food.herokuapp.com/delivery_charges</p>
 
     INPUT Body for post: JSON Object
     Example:
@@ -1620,7 +1620,7 @@
 
 <p>4.Get Delivery charge based on pincode</p>
 <p>Method : GET</p>
-<p>Example : https://epay-apis.herokuapp.com/delivery_charges?zipcode=12345</p>
+<p>Example : https://kenz-food.herokuapp.com/delivery_charges?zipcode=12345</p>
 Respose body from get:JSON Object
 Example:
 {
@@ -1636,7 +1636,7 @@ Example:
     <p>apply_coupon</p>
     <p>URL: /apply_coupon</p>
     <p>Method : POST</p>
-    <p>Example : https://epay-apis.herokuapp.com/apply_coupon</p>
+    <p>Example : https://kenz-food.herokuapp.com/apply_coupon</p>
 
     INPUT Body for post: JSON Object
     Example:
@@ -1650,7 +1650,7 @@ Example:
     <p>/coupons</p>
     <p>URL: /coupons</p>
     <p>Method : POST</p>
-    <p>Example : https://epay-apis.herokuapp.com/coupons</p>
+    <p>Example : https://kenz-food.herokuapp.com/coupons</p>
 
     INPUT Body for post: JSON Object
     Example:
@@ -1668,7 +1668,7 @@ Example:
     <p>URL: /user_addr</p>
     <p>Method: POST</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://epay-apis.herokuapp.com/user_addr</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr</p>
 
         Example Input body:
         {
@@ -1690,7 +1690,7 @@ Example:
     <p>Get all address for a user</p>
     <p>URL: /user_addr</p>
     <p>Method: GET</p>
-    <p>Example : https://epay-apis.herokuapp.com/user_addr</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr</p>
 
         Example Response body:
         {
@@ -1716,7 +1716,7 @@ Example:
     <p>Get a address for a user</p>
     <p>URL: /user_addr/{id}</p>
     <p>Method: GET</p>
-    <p>Example : https://epay-apis.herokuapp.com/user_addr/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr/1</p>
 
         Example Response body:
         {
@@ -1743,7 +1743,7 @@ Example:
     <p>URL: /user_addr/{id}</p>
     <p>Method: PUT</p>
     <p>URL Content-Type: JSON</p>
-    <p>Example : https://epay-apis.herokuapp.com/user_addr/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/user_addr/1</p>
 
         Example Input body:
         {
@@ -1767,7 +1767,7 @@ Example:
     <p>URL: /order/{user_addr_id}</p>
     <p>Method : POST</p>
     <p>Parameters : </p>
-    <p>Example : https://epay-apis.herokuapp.com/order/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/order/1</p>
 
     Example Input:
     {
@@ -1790,7 +1790,7 @@ Example:
     <p>URL: /order/{order_id}</p>
     <p>Method : GET</p>
     <p>Parameters : order_id</p>
-    <p>Example : https://epay-apis.herokuapp.com/order/1</p>
+    <p>Example : https://kenz-food.herokuapp.com/order/1</p>
 
     Response Body: JSON Object
     Example:
