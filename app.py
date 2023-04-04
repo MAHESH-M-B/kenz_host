@@ -279,6 +279,7 @@ class Products(db.Model):
     fresh = db.Column(db.String(100), nullable=True)
     offer = db.Column(db.String(100), nullable=True)
 
+
     # cat = db.Column(db.Integer,  db.ForeignKey('productcategory.id'))
     cat = db.Column(db.Integer, db.ForeignKey('productcategory.id'), nullable=True)
     subcat = db.Column(db.Integer, db.ForeignKey('productsubcategory.id'), nullable=True)
@@ -307,6 +308,8 @@ class ProductStock(db.Model):
     __tablename__ = 'productstock'
     id = db.Column(db.Integer, primary_key=True)
     product_price = db.Column(db.String(100), nullable=True)
+    product_wholesaleprice=db.Column(db.String(100), nullable=True)
+    product_wholesaleofferprice=db.Column(db.String(100), nullable=True)
     product_offer_price = db.Column(db.String(100), nullable=True)
     product_purchase_price = db.Column(db.String(100), nullable=True)
     opening_stock = db.Column(db.String(100), nullable=True)
@@ -328,6 +331,12 @@ class ProductUnit(db.Model):
     unit_desc_ar = db.Column(db.String(100), nullable=True)
     unit_short_form_en = db.Column(db.String(100), nullable=True)
     unit_short_form_ar = db.Column(db.String(100), nullable=True)
+    wholesale_unit_name_en = db.Column(db.String(100), nullable=False)
+    wholesale_unit_name_ar = db.Column(db.String(100), nullable=True)
+    wholesale_unit_desc_en = db.Column(db.String(100), nullable=True)
+    wholesale_unit_desc_ar = db.Column(db.String(100), nullable=True)
+    wholesale_unit_short_form_en = db.Column(db.String(100), nullable=True)
+    wholesale_unit_short_form_ar = db.Column(db.String(100), nullable=True)
     active = db.Column(db.String(100), nullable=True)
 
 
@@ -572,37 +581,99 @@ def insert_users():
     return jsonify({'return': 'no POST request'})
 
 
+# @app.route('/insert_wholesale_users', methods=['POST'])
+# def insert_wholesale_users():
+#     if request.method == 'POST':
+#         content = request.json
+#         print(content)
+#         try: 
+#             with app.app_context():
+#                 user = Users(ip_address=request.remote_addr, 
+#                     public_id=str(uuid.uuid4()),
+#                     username=content['username'],
+#                     email=content['email'],
+#                     phone=content['phone'],
+#                     created_at=datetime.datetime.now(),
+#                     is_wholesale=True,
+#                     user_type="wholesale",
+
+#                 )
+#                 db.session.add(user)
+#                 db.session.commit()
+#                 current_user = Users.query.filter_by(email=content['email']).first()
+#             return jsonify({'return': 'user added successfully',
+#                             'user_id': current_user.id,
+#                             'user_type': current_user.user_type,
+#                             'public_id': current_user.public_id,
+#                             'username': current_user.username,
+#                             'email': current_user.email,
+#                             'phone': current_user.phone,
+#                             'created_at': current_user.created_at})
+#         except Exception as e:
+#             return jsonify({'return': 'error adding user'+str(e)})
+#     return jsonify({'return': 'no POST request'})
+
 @app.route('/insert_wholesale_users', methods=['POST'])
 def insert_wholesale_users():
     if request.method == 'POST':
-        content = request.json
-        print(content)
-        try: 
+        email=request.form['email']
+        try:
             with app.app_context():
                 user = Users(ip_address=request.remote_addr, 
-                    public_id=str(uuid.uuid4()),
-                    username=content['username'],
-                    email=content['email'],
-                    phone=content['phone'],
-                    created_at=datetime.datetime.now(),
-                    is_wholesale=True,
-                    user_type="wholesale",
+                              public_id=str(uuid.uuid4()),
+                              username=request.form['username'],
+                              email=request.form['email'],
+                              phone=request.form['phone'],
+                              created_at=datetime.datetime.now(),
+                              is_wholesale=True,
+                              user_type="wholesale",
+                              document_url1='',
+                              document_url2='',
+                              )
 
-                )
+                if 'document_url1' in request.files:
+                    document_url1_file = request.files['document_url1']
+                    if document_url1_file:
+                        document_url1_filename = secure_filename(document_url1_file.filename)
+                        basedir = os.path.abspath(os.path.dirname(__file__))
+                        document_url1_file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url1_filename))   
+                        upload_image = im.upload_image(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url1_filename), title=document_url1_filename)
+                        user.document_url1 = upload_image.link
+                        os.remove(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url1_filename))
+
+                if 'document_url2' in request.files:
+                    document_url2_file = request.files['document_url2']
+                    if document_url2_file:
+                        document_url2_filename = secure_filename(document_url2_file.filename)
+                        basedir = os.path.abspath(os.path.dirname(__file__))
+                        document_url2_file.save(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url2_filename))   
+                        upload_image = im.upload_image(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url2_filename), title=document_url2_filename)
+                        user.document_url2 = upload_image.link
+                        os.remove(os.path.join(basedir, app.config['UPLOAD_FOLDER'], document_url2_filename))
+
                 db.session.add(user)
                 db.session.commit()
-                current_user = Users.query.filter_by(email=content['email']).first()
-            return jsonify({'return': 'user added successfully',
-                            'user_id': current_user.id,
-                            'user_type': current_user.user_type,
-                            'public_id': current_user.public_id,
-                            'username': current_user.username,
-                            'email': current_user.email,
-                            'phone': current_user.phone,
-                            'created_at': current_user.created_at})
+
+                current_user = Users.query.filter_by(email=email).first()
+
+                return jsonify({'return': 'user added successfully',
+                                'user_id': current_user.id,
+                                'user_type': current_user.user_type,
+                                'public_id': current_user.public_id,
+                                'username': current_user.username,
+                                'email': current_user.email,
+                                'phone': current_user.phone,
+                                'created_at': current_user.created_at,
+                                'document_url1': current_user.document_url1,
+                                'document_url2': current_user.document_url2
+                               })
+
         except Exception as e:
             return jsonify({'return': 'error adding user'+str(e)})
+
     return jsonify({'return': 'no POST request'})
+
+
 
 @app.route('/insert_admin', methods=['POST'])
 def insert_admin():

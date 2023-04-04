@@ -1868,23 +1868,27 @@ Example:
     <p>Method: POST</p>
     <p>URL Content-Type: JSON</p>
 
-        Example Input body:
+        Example Input body as form-data:
         {
             "username": "john_doe1",
             "email": "john_doe@example1.com",
-            "phone": "1234567890234231"
+            "phone": "1234567890234231",
+            "document_url1":imagefile,
+            "document_url2":imagefile,
         }
 
         Example Response body:
         {
-            "created_at": "2023-04-03 17:08:39.925064",
-            "email": "john_doe@example1.com",
-            "phone": "1234567890234231",
-            "public_id": "d4fedcfb-3353-4408-9faf-c9614929129d",
+            "created_at": "2023-04-03 20:24:41.170689",
+            "document_url1": "https://i.imgur.com/LQF0rKZ.png",
+            "document_url2": "https://i.imgur.com/jIu9Ml7.png",
+            "email": "johndoe@example.com",
+            "phone": "1234567890",
+            "public_id": "4d8d20ff-d831-4b75-92f8-e88b7280f553",
             "return": "user added successfully",
-            "user_id": 8,
+            "user_id": 2,
             "user_type": "wholesale",
-            "username": "john_doe1"
+            "username": "John"
         }
 
 </ul>
