@@ -390,6 +390,13 @@ class CartItem(db.Model):
     fk_product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
 
 
+from enum import Enum
+class OrderStatus(Enum):
+    ORDERED = "ordered"
+    ORDER_PROCESSING = "order processing"
+    OUT_FOR_DELIVERY = "out for delivery"
+    DELIVERED = "delivered"
+
 
 class Order(db.Model):
     __tablename__ = 'order'
@@ -399,7 +406,7 @@ class Order(db.Model):
     total_price = db.Column(db.String(100), nullable=False)
     # payment_method = db.Column(db.String(100), nullable=False)
     address_id = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.Enum(OrderStatus), nullable=False, default=OrderStatus.ORDERED)
     created_at = db.Column(db.DateTime, nullable=True)
     modified_at = db.Column(db.DateTime, nullable=True)
     delivery_time=db.Column(db.DateTime, nullable=True)
@@ -407,7 +414,6 @@ class Order(db.Model):
     
     ord = db.relationship('OrderDetails', backref='ord')
     pay_ord = db.relationship('PaymentDetails', backref='pay_ord')
-
 
 class OrderDetails(db.Model):
     __tablename__ = 'orderdetails'
@@ -549,8 +555,8 @@ def insert_users():
             with app.app_context():
                 current_user = Users.query.filter_by(phone=phone_number).first()
                 if current_user:
-                    # if current_user.verified_user:
-                    if current_user:
+                    if current_user.verified_user:
+                    # if current_user:
                         user = current_user
                         token = jwt.encode({'public_id': current_user.public_id}, app.config['SECRET_KEY'])
                         token_str = token.decode() # convert the 'token' bytes object to a string
@@ -806,18 +812,18 @@ def update_password(user_id):
 
 
 
-@app.route('/verify/<int:user_id>', methods=['GET'])
-def isVerified(user_id):
-    user = Users.query.filter_by(id=user_id).first()
+@app.route('/verify/<string:phone>', methods=['GET'])
+def isVerified(phone):
+    user = Users.query.filter_by(phone=phone).first()
     if user:
         return jsonify({'return': 'success', 'user_verification_status': user.verified_user})
     else:
         return jsonify({'return': 'user not found'})
 
-@app.route('/verify/<int:user_id>', methods=['PUT'])
-def verify(user_id):
+@app.route('/verify/<string:phone>', methods=['PUT'])
+def verify(phone):
     if request.method == 'PUT':
-        user = Users.query.filter_by(id=user_id).first()
+        user = Users.query.filter_by(phone=phone).first()
         if user:
             user.verified_user = True
             db.session.commit()
@@ -1702,9 +1708,7 @@ def get_product_stocks():
 
 # dev2
 @app.route('/get_products', methods=['GET'])
-@token_required
-def get_products(jwt_current_user):
-    print(jwt_current_user)
+def get_products():
     if request.method == 'GET':
         try:
             # Get request parameters
@@ -1712,7 +1716,7 @@ def get_products(jwt_current_user):
             subcategory_id = request.args.get('subcategory_id')
             delivery_type = request.args.get('delivery_type')
             product_id = request.args.get('product_id')
-
+            user_type = request.args.get('user_type')
             # Query products based on parameters
             query = Products.query
             if product_id:  # Add a filter for product ID
@@ -1725,6 +1729,8 @@ def get_products(jwt_current_user):
                 query = query.filter_by(fast_delivery="1")
             elif delivery_type == 'normal':
                 query = query.filter_by(fast_delivery="0")
+            if user_type == 'wholesale':
+                query = query.filter(Products.product_stock.any(ProductStock.product_wholesaleprice.isnot(None)))
 
             products = query.all()
 
@@ -1769,6 +1775,8 @@ def get_products(jwt_current_user):
                             'product_id': product_stock.fk_product_id,
                         }
                         # if jwt_current_user.is_wholesale
+                        if user_type=='wholesale':
+                            product_stock_json['product_price'] = product_stock.product_wholesaleprice
                         product_json['product_stock'].append(product_stock_json)
                     for product_image in product.product_image:
                         product_image_json = {
@@ -1786,6 +1794,182 @@ def get_products(jwt_current_user):
             return jsonify({'return': 'error getting products : '+ str(e)})
     else:
         return jsonify({'return': 'error', 'message': 'method not allowed'})
+
+# @app.route('/get_products', methods=['GET'])
+# def get_products():
+#     if request.method == 'GET':
+#         try:
+#             # Get request parameters
+#             category_id = request.args.get('category_id')
+#             subcategory_id = request.args.get('subcategory_id')
+#             delivery_type = request.args.get('delivery_type')
+#             product_id = request.args.get('product_id')
+
+#             # Query products based on parameters
+#             query = Products.query
+#             if product_id:  # Add a filter for product ID
+#                 query = query.filter_by(id=product_id)
+#             if category_id:
+#                 query = query.filter_by(cat=category_id)
+#             if subcategory_id:
+#                 query = query.filter_by(subcat=subcategory_id)
+#             if delivery_type == 'fast':
+#                 query = query.filter_by(fast_delivery="1")
+#             elif delivery_type == 'normal':
+#                 query = query.filter_by(fast_delivery="0")
+
+#             products = query.all()
+
+#             # Format products into JSON response
+#             if products:
+#                 products_json = []
+#                 for product in products:
+#                     product_json = {
+#                         'id': product.id,
+#                         'product_name_en': product.product_name_en,
+#                         'product_name_ar': product.product_name_ar,
+#                         'product_desc_en': product.product_desc_en,
+#                         'product_desc_ar': product.product_desc_ar,
+#                         'unit_quantity': product.unit_quantity,
+#                         'product_code': product.product_code,
+#                         'product_barcode': product.produc_barcode,
+#                         'other_title_en': product.other_title_en,
+#                         'other_title_ar': product.other_title_ar, 
+#                         'status': product.status,
+#                         'fast_delivery': product.fast_delivery,
+#                         'featured': product.featured,
+#                         'fresh': product.fresh,
+#                         'offer': product.offer,
+#                         'product_cat_id': product.cat,
+#                         'product_subcat_id': product.subcat,
+#                         'cat_id': product.cat,
+#                         'subcat_id': product.subcat,
+#                         'product_stock': [],
+#                         'product_images': []
+#                     }
+#                     for product_stock in product.product_stock:
+#                         product_stock_json = {
+#                             'id': product_stock.id,
+#                             'product_price': product_stock.product_price,
+#                             'product_offer_price': product_stock.product_offer_price,
+#                             'product_purchase_price': product_stock.product_purchase_price,
+#                             'opening_stock': product_stock.opening_stock,
+#                             'min_stock': product_stock.min_stock,
+#                             'max_stock': product_stock.max_stock,
+#                             'main_rack_no': product_stock.main_rack_no,
+#                             'sub_rack_no': product_stock.sub_rack_no,
+#                             'product_id': product_stock.fk_product_id,
+#                         }
+#                         # if jwt_current_user.is_wholesale
+#                         product_json['product_stock'].append(product_stock_json)
+#                     for product_image in product.product_image:
+#                         product_image_json = {
+#                             'id': product_image.id,
+#                             'product_image_url': product_image.product_image_url,
+#                             'product_id': product_image.fk_product_id,
+#                         }
+#                         product_json['product_images'].append(product_image_json)
+#                     products_json.append(product_json)
+
+#                 return jsonify({'return': 'success', 'products': products_json})
+#             else:
+#                 return jsonify({'return': 'no products'})
+#         except Exception as e:
+#             return jsonify({'return': 'error getting products : '+ str(e)})
+#     else:
+#         return jsonify({'return': 'error', 'message': 'method not allowed'})
+
+
+
+
+# @app.route('/get_wholeproducts', methods=['GET'])
+# @token_required
+# def get_wholeproducts(jwt_current_user):
+#     if request.method == 'GET':
+#         try:
+#             # Get request parameters
+#             category_id = request.args.get('category_id')
+#             subcategory_id = request.args.get('subcategory_id')
+#             delivery_type = request.args.get('delivery_type')
+#             product_id = request.args.get('product_id')
+
+#             # Query products based on parameters
+#             query = Products.query
+#             if product_id:  # Add a filter for product ID
+#                 query = query.filter_by(id=product_id)
+#             if category_id:
+#                 query = query.filter_by(cat=category_id)
+#             if subcategory_id:
+#                 query = query.filter_by(subcat=subcategory_id)
+#             if delivery_type == 'fast':
+#                 query = query.filter_by(fast_delivery="1")
+#             elif delivery_type == 'normal':
+#                 query = query.filter_by(fast_delivery="0")
+            
+#             # Add a filter for wholesale price
+#             query = query.filter(Products.product_stock.any(ProductStock.product_wholesaleprice.isnot(None)))
+
+#             products = query.all()
+
+#             # Format products into JSON response
+#             if products:
+#                 products_json = []
+#                 for product in products:
+#                     product_json = {
+#                         'id': product.id,
+#                         'product_name_en': product.product_name_en,
+#                         'product_name_ar': product.product_name_ar,
+#                         'product_desc_en': product.product_desc_en,
+#                         'product_desc_ar': product.product_desc_ar,
+#                         'unit_quantity': product.unit_quantity,
+#                         'product_code': product.product_code,
+#                         'product_barcode': product.produc_barcode,
+#                         'other_title_en': product.other_title_en,
+#                         'other_title_ar': product.other_title_ar, 
+#                         'status': product.status,
+#                         'fast_delivery': product.fast_delivery,
+#                         'featured': product.featured,
+#                         'fresh': product.fresh,
+#                         'offer': product.offer,
+#                         'product_cat_id': product.cat,
+#                         'product_subcat_id': product.subcat,
+#                         'cat_id': product.cat,
+#                         'subcat_id': product.subcat,
+#                         'product_stock': [],
+#                         'product_images': []
+#                     }
+#                     for product_stock in product.product_stock:
+#                         if product_stock.product_wholesaleprice is not None: # Add a filter for wholesale price
+#                             product_stock_json = {
+#                                 'id': product_stock.id,
+#                                 'product_purchase_price': product_stock.product_purchase_price,
+#                                 'opening_stock': product_stock.opening_stock,
+#                                 'min_stock': product_stock.min_stock,
+#                                 'max_stock': product_stock.max_stock,
+#                                 'main_rack_no': product_stock.main_rack_no,
+#                                 'sub_rack_no': product_stock.sub_rack_no,
+#                                 'product_id': product_stock.fk_product_id,
+#                                 'product_price': product_stock.product_wholesaleprice, # Use wholesale price
+#                             }
+#                             if product_stock.product_offer_price is not None:
+#                                 product_stock_json['product_offer_price'] = product_stock.product_offer_price
+#                             product_json['product_stock'].append(product_stock_json)
+#                     for product_image in product.product_image:
+#                         product_image_json = {
+#                             'id': product_image.id,
+#                             'product_image_url': product_image.product_image_url,
+#                             'product_id': product_image.fk_product_id,
+#                         }
+#                         product_json['product_images'].append(product_image_json)
+#                     products_json.append(product_json)
+
+#                 return jsonify({'return': 'success', 'products': products_json})
+#             else:
+#                 return jsonify({'return': 'no products'})
+#         except Exception as e:
+#             return jsonify({'return': 'error', 'message': 'method not allowed'})
+
+
 
 
 
@@ -2515,6 +2699,7 @@ def getOrderDetailsWithProduct(jwt_current_user, order_id):
 
                     order_details.append({
                         'order_id': item.id,
+                        'order_status':get_order.status,
                         'fk_order_id': item.fk_order_id,
                         'fk_product_id': item.fk_product_id,
                         'item_quantity': item.item_quantity,
@@ -2925,6 +3110,8 @@ def addProductWithSubcat(subcat_id):
 
                 prod_stock = ProductStock(fk_product_id=prod.id,
                         product_price=request.form['product_price'],
+
+                        product_wholesaleprice=request.form['product_wholesaleprice'],
                         product_offer_price=request.form['product_offer_price'],
                         product_purchase_price=request.form['product_purchase_price'],
                         opening_stock=request.form['opening_stock'],
@@ -3095,6 +3282,7 @@ def addProduct():
 
                 prod_stock = ProductStock(fk_product_id=prod.id,
                         product_price=request.form['product_price'],
+                        product_wholesaleprice=request.form['product_wholesaleprice'],
                         product_offer_price=request.form['product_offer_price'],
                         product_purchase_price=request.form['product_purchase_price'],
                         opening_stock=request.form['opening_stock'],
@@ -3557,3 +3745,77 @@ def add_coupon():
     db.session.add(coupon)
     db.session.commit()
     return jsonify({'message': 'Coupon added successfully.'}), 201
+
+# dev2
+# payment gatway
+@app.route('/create-invoice', methods=['POST'])
+def create_invoice():
+    # Get data from POST request
+    invoice_value = request.json['InvoiceValue']
+    customer_name = request.json['CustomerName']
+    CallBackUrl=request.json['CallBackUrl']
+    ErrorUrl=request.json['ErrorUrl']
+    # notification_option = request.json['NotificationOption']
+    
+    # Define payload for MyFatoorah API
+    payload = {
+        "CustomerName": customer_name,
+        "NotificationOption": "LNK" ,
+        "InvoiceValue": invoice_value,
+        "CallBackUrl":CallBackUrl,
+        "ErrorUrl":ErrorUrl
+
+    }
+    
+    # Define headers for MyFatoorah API
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer 6icFoKJuYjDQnDsBO_Fq7OsJ_gbuJF5BYaZxMiHB-PWBcisB0VNejYWpWMTsQd5cz4zxOPB-3MUdKR0BJRkRV3NVoUEwr_47ikZ_GL2xpgh3hc5j3ZmnJjHIqZerLqX_eT_xTYUBAiqWqLKCypzgiOcAYrCUFGs4U-EKZNjeLJtOjfiUq-pCJzwRCgq--ng8Vq8L3U38qTJi_gBgZVVXGTpzTMLN4-nwUwZjLuVyioJA735F1R4uqc5JZlmr14_YRVr2eGTZVm2O3o3lfZPCOPXSNysTLacm5PLYQkj9XGZPgHv2lU9TtH_-UrveS8FyRNzJVPaq7mwjcGf3QxgeLHX4nXgdA7uytKDbd8C-CzxnAmXAI1Ut4Lvvv9F-EooO148SnAa9B-hNR2Pb8Oj1vwqMSZO2gbsRFoj4Ak5lno0Eq6gDFaCJ2UtRBaiKHLQbkQmcaSA_Yoq23FsugOdbv-1HajsmupbDoAbprBMkQk_Wup8nQh4LwSCasAscigVBs9hOXUnfilEdswaRrCbTt9MOi8szXU7wf_34FI2I11nOuTXSXKIpmWITUBXf7lQqeUoKgIqhPA9Q4aHMDIQySMC5yjoJcw96i5t7-DZljV-Ap_i_E_J37HcZZle6wWCQvbeAlwJBr1VtxRJcikPoN-KpVFc1f-hYNl6ft3icPfUNbctges5aLPzd-U__Ytd7szV5wg"
+    }
+    
+    # Send request to MyFatoorah API
+    response = requests.post("https://api.myfatoorah.com/v2/SendPayment", data=json.dumps(payload), headers=headers)
+    print(response)
+    
+    # Extract the invoice URL from the response and return it as a JSON response
+    if response.status_code == 200:
+        response_data = response.json()
+        return jsonify({'response_data': response_data})
+    else:
+        return jsonify({'error': 'Failed to create invoice'})
+
+
+
+# dev2
+# get payment status
+
+@app.route('/get-payment-status', methods=['POST'])
+def get_payment_status():
+    # Get data from POST request
+    Key = request.json['Key']
+    KeyType = request.json['KeyType']
+    # notification_option = request.json['NotificationOption']
+    
+    # Define payload for MyFatoorah API
+    payload = {
+        "Key": Key,
+        "KeyType": KeyType,
+
+    }
+    
+    # Define headers for MyFatoorah API
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer 6icFoKJuYjDQnDsBO_Fq7OsJ_gbuJF5BYaZxMiHB-PWBcisB0VNejYWpWMTsQd5cz4zxOPB-3MUdKR0BJRkRV3NVoUEwr_47ikZ_GL2xpgh3hc5j3ZmnJjHIqZerLqX_eT_xTYUBAiqWqLKCypzgiOcAYrCUFGs4U-EKZNjeLJtOjfiUq-pCJzwRCgq--ng8Vq8L3U38qTJi_gBgZVVXGTpzTMLN4-nwUwZjLuVyioJA735F1R4uqc5JZlmr14_YRVr2eGTZVm2O3o3lfZPCOPXSNysTLacm5PLYQkj9XGZPgHv2lU9TtH_-UrveS8FyRNzJVPaq7mwjcGf3QxgeLHX4nXgdA7uytKDbd8C-CzxnAmXAI1Ut4Lvvv9F-EooO148SnAa9B-hNR2Pb8Oj1vwqMSZO2gbsRFoj4Ak5lno0Eq6gDFaCJ2UtRBaiKHLQbkQmcaSA_Yoq23FsugOdbv-1HajsmupbDoAbprBMkQk_Wup8nQh4LwSCasAscigVBs9hOXUnfilEdswaRrCbTt9MOi8szXU7wf_34FI2I11nOuTXSXKIpmWITUBXf7lQqeUoKgIqhPA9Q4aHMDIQySMC5yjoJcw96i5t7-DZljV-Ap_i_E_J37HcZZle6wWCQvbeAlwJBr1VtxRJcikPoN-KpVFc1f-hYNl6ft3icPfUNbctges5aLPzd-U__Ytd7szV5wg"
+    }
+    
+    # Send request to MyFatoorah API
+    response = requests.post("https://api.myfatoorah.com/v2/getPaymentStatus", data=json.dumps(payload), headers=headers)
+    print(response)
+    
+    # Extract the invoice URL from the response and return it as a JSON response
+    if response.status_code == 200:
+        response_data = response.json()
+        return jsonify({'response_data': response_data})
+    else:
+        return jsonify({'error': 'Failed to generate status'})
