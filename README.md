@@ -1505,8 +1505,11 @@
     <ol>
         <li>parm = {product_id, category_id, subcategory_id,delivery_type}</li>
     </ol>
+    <p>Example for getting all normal products : https://kenz-food.herokuapp.com/get_products</p>
+    <p>Example for getting all wholesale products : https://kenz-food.herokuapp.com/get_products?user_type=wholesale</p>
     <p>Example : https://kenz-food.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast</p>
-
+    <p>Example : https://kenz-food.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=normal</p>
+    <p>Example  for getting wholesale user product : https://kenz-food.herokuapp.com/get_products?category_id=1&subcategory_id=1&delivery_type=fast&user_type=wholesale</p>
     Response Body: JSON Object
     Example:
     {
