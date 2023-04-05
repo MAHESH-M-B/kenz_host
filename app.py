@@ -27,6 +27,7 @@ import random
 import xlrd
 
 
+# from flask_cors import CORS
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app,origins=['http://localhost:5173','https://kenzfood.onrender.com'])
@@ -548,8 +549,8 @@ def insert_users():
             with app.app_context():
                 current_user = Users.query.filter_by(phone=phone_number).first()
                 if current_user:
-                    if current_user.verified_user:
-                    # if current_user:
+                    # if current_user.verified_user:
+                    if current_user:
                         user = current_user
                         token = jwt.encode({'public_id': current_user.public_id}, app.config['SECRET_KEY'])
                         token_str = token.decode() # convert the 'token' bytes object to a string
@@ -1701,7 +1702,9 @@ def get_product_stocks():
 
 # dev2
 @app.route('/get_products', methods=['GET'])
-def get_products():
+@token_required
+def get_products(jwt_current_user):
+    print(jwt_current_user)
     if request.method == 'GET':
         try:
             # Get request parameters
@@ -1765,6 +1768,7 @@ def get_products():
                             'sub_rack_no': product_stock.sub_rack_no,
                             'product_id': product_stock.fk_product_id,
                         }
+                        # if jwt_current_user.is_wholesale
                         product_json['product_stock'].append(product_stock_json)
                     for product_image in product.product_image:
                         product_image_json = {
