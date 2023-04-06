@@ -1501,9 +1501,8 @@
     <p>Get all Products based on parm input</p>
     <p>URL: /get_products</p>
     <p>Method : GET</p>
-    <p>Parameters : parm, id</p>
     <ol>
-        <li>parm = {product_id, category_id, subcategory_id,delivery_type}</li>
+        <li>parm = {product_id, category_id, subcategory_id,delivery_type,user_type}</li>
     </ol>
     <p>Example for getting all normal products : https://kenz-food.herokuapp.com/get_products</p>
     <p>Example for getting all wholesale products : https://kenz-food.herokuapp.com/get_products?user_type=wholesale</p>
@@ -1601,7 +1600,6 @@
         ],
         "return": "success"
     }
-
 </ul>
 
 <h3>3.Delivery charge </h3>
