@@ -1616,7 +1616,7 @@
         "location_zipcode": "12345",
         "normal_charge": 5.00,
         "fast_charge": 10.00,
-        "active_status": true
+        "active_status": 1
     }
 
 <p>4.Get Delivery charge based on pincode</p>

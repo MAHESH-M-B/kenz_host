@@ -1707,6 +1707,96 @@ def get_product_stocks():
 
 
 # dev2
+# @app.route('/get_products', methods=['GET'])
+# def get_products():
+#     if request.method == 'GET':
+#         try:
+#             # Get request parameters
+#             category_id = request.args.get('category_id')
+#             subcategory_id = request.args.get('subcategory_id')
+#             delivery_type = request.args.get('delivery_type')
+#             product_id = request.args.get('product_id')
+#             user_type = request.args.get('user_type')
+#             # Query products based on parameters
+#             query = Products.query
+#             if product_id:  # Add a filter for product ID
+#                 query = query.filter_by(id=product_id)
+#             if category_id:
+#                 query = query.filter_by(cat=category_id)
+#             if subcategory_id:
+#                 query = query.filter_by(subcat=subcategory_id)
+#             if delivery_type == 'fast':
+#                 query = query.filter_by(fast_delivery="1")
+#             elif delivery_type == 'normal':
+#                 query = query.filter_by(fast_delivery="0")
+#             if user_type == 'wholesale':
+#                 query = query.filter(Products.product_stock.any(ProductStock.product_wholesaleprice.isnot(None)))
+
+#             products = query.all()
+
+#             # Format products into JSON response
+#             if products:
+#                 products_json = []
+#                 for product in products:
+#                     product_json = {
+#                         'id': product.id,
+#                         'product_name_en': product.product_name_en,
+#                         'product_name_ar': product.product_name_ar,
+#                         'product_desc_en': product.product_desc_en,
+#                         'product_desc_ar': product.product_desc_ar,
+#                         'unit_quantity': product.unit_quantity,
+#                         'product_code': product.product_code,
+#                         'product_barcode': product.produc_barcode,
+#                         'other_title_en': product.other_title_en,
+#                         'other_title_ar': product.other_title_ar, 
+#                         'status': product.status,
+#                         'fast_delivery': product.fast_delivery,
+#                         'featured': product.featured,
+#                         'fresh': product.fresh,
+#                         'offer': product.offer,
+#                         'product_cat_id': product.cat,
+#                         'product_subcat_id': product.subcat,
+#                         'cat_id': product.cat,
+#                         'subcat_id': product.subcat,
+#                         'product_stock': [],
+#                         'product_images': []
+#                     }
+#                     for product_stock in product.product_stock:
+#                         product_stock_json = {
+#                             'id': product_stock.id,
+#                             'product_price': product_stock.product_price,
+#                             'product_offer_price': product_stock.product_offer_price,
+#                             'product_purchase_price': product_stock.product_purchase_price,
+#                             'opening_stock': product_stock.opening_stock,
+#                             'min_stock': product_stock.min_stock,
+#                             'max_stock': product_stock.max_stock,
+#                             'main_rack_no': product_stock.main_rack_no,
+#                             'sub_rack_no': product_stock.sub_rack_no,
+#                             'product_id': product_stock.fk_product_id,
+#                         }
+#                         # if jwt_current_user.is_wholesale
+#                         if user_type=='wholesale':
+#                             product_stock_json['product_price'] = product_stock.product_wholesaleprice
+#                         product_json['product_stock'].append(product_stock_json)
+#                     for product_image in product.product_image:
+#                         product_image_json = {
+#                             'id': product_image.id,
+#                             'product_image_url': product_image.product_image_url,
+#                             'product_id': product_image.fk_product_id,
+#                         }
+#                         product_json['product_images'].append(product_image_json)
+#                     products_json.append(product_json)
+
+#                 return jsonify({'return': 'success', 'products': products_json})
+#             else:
+#                 return jsonify({'return': 'no products'})
+#         except Exception as e:
+#             return jsonify({'return': 'error getting products : '+ str(e)})
+#     else:
+#         return jsonify({'return': 'error', 'message': 'method not allowed'})
+
+
+
 @app.route('/get_products', methods=['GET'])
 def get_products():
     if request.method == 'GET':
@@ -1717,6 +1807,33 @@ def get_products():
             delivery_type = request.args.get('delivery_type')
             product_id = request.args.get('product_id')
             user_type = request.args.get('user_type')
+
+            # Check if user is logged in
+            
+            jwt_token = request.headers.get('x-access-token')
+            if jwt_token:
+                try:
+                    jwt_payload = jwt.decode(jwt_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+
+                    public_id = jwt_payload['public_id']
+                    current_user = Users.query.filter_by(public_id=public_id).first()
+                    print(current_user.id)
+                    # print(UserWhishlist.objects.filter(fk_user_id=current_user.id).first())
+                    wishlist_items1 = UserWhishlist.query.filter_by(fk_user_id=current_user.id).all()
+                    for item in wishlist_items1:
+                        print(item.fk_product_id)
+                    wishlist_items = [item.fk_product_id for item in wishlist_items1]
+                    print(wishlist_items)
+
+                except jwt.exceptions.DecodeError as e:
+                    print('Invalid token')
+                    print(e)
+                except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, AttributeError):
+                    # Invalid or expired JWT token, or user not found
+                    wishlist_items = []
+            else:
+                wishlist_items = []
+
             # Query products based on parameters
             query = Products.query
             if product_id:  # Add a filter for product ID
@@ -1738,6 +1855,7 @@ def get_products():
             if products:
                 products_json = []
                 for product in products:
+                    in_wishlist = str(product.id) in str(wishlist_items)
                     product_json = {
                         'id': product.id,
                         'product_name_en': product.product_name_en,
@@ -1759,7 +1877,8 @@ def get_products():
                         'cat_id': product.cat,
                         'subcat_id': product.subcat,
                         'product_stock': [],
-                        'product_images': []
+                        'product_images': [],
+                        'in_wishlist': in_wishlist  # Add in_wishlist variable
                     }
                     for product_stock in product.product_stock:
                         product_stock_json = {
@@ -1774,7 +1893,6 @@ def get_products():
                             'sub_rack_no': product_stock.sub_rack_no,
                             'product_id': product_stock.fk_product_id,
                         }
-                        # if jwt_current_user.is_wholesale
                         if user_type=='wholesale':
                             product_stock_json['product_price'] = product_stock.product_wholesaleprice
                         product_json['product_stock'].append(product_stock_json)
@@ -1790,10 +1908,98 @@ def get_products():
                 return jsonify({'return': 'success', 'products': products_json})
             else:
                 return jsonify({'return': 'no products'})
+
         except Exception as e:
             return jsonify({'return': 'error getting products : '+ str(e)})
     else:
         return jsonify({'return': 'error', 'message': 'method not allowed'})
+
+
+#     if request.method == 'GET':
+#         try:
+#             # Get request parameters
+#             category_id = request.args.get('category_id')
+#             subcategory_id = request.args.get('subcategory_id')
+#             delivery_type = request.args.get('delivery_type')
+#             product_id = request.args.get('product_id')
+#             user_type = request.args.get('user_type')
+#             # Query products based on parameters
+#             query = Products.query
+#             if product_id:  # Add a filter for product ID
+#                 query = query.filter_by(id=product_id)
+#             if category_id:
+#                 query = query.filter_by(cat=category_id)
+#             if subcategory_id:
+#                 query = query.filter_by(subcat=subcategory_id)
+#             if delivery_type == 'fast':
+#                 query = query.filter_by(fast_delivery="1")
+#             elif delivery_type == 'normal':
+#                 query = query.filter_by(fast_delivery="0")
+#             if user_type == 'wholesale':
+#                 query = query.filter(Products.product_stock.any(ProductStock.product_wholesaleprice.isnot(None)))
+
+#             products = query.all()
+
+#             # Format products into JSON response
+#             if products:
+#                 products_json = []
+#                 for product in products:
+#                     product_json = {
+#                         'id': product.id,
+#                         'product_name_en': product.product_name_en,
+#                         'product_name_ar': product.product_name_ar,
+#                         'product_desc_en': product.product_desc_en,
+#                         'product_desc_ar': product.product_desc_ar,
+#                         'unit_quantity': product.unit_quantity,
+#                         'product_code': product.product_code,
+#                         'product_barcode': product.produc_barcode,
+#                         'other_title_en': product.other_title_en,
+#                         'other_title_ar': product.other_title_ar, 
+#                         'status': product.status,
+#                         'fast_delivery': product.fast_delivery,
+#                         'featured': product.featured,
+#                         'fresh': product.fresh,
+#                         'offer': product.offer,
+#                         'product_cat_id': product.cat,
+#                         'product_subcat_id': product.subcat,
+#                         'cat_id': product.cat,
+#                         'subcat_id': product.subcat,
+#                         'product_stock': [],
+#                         'product_images': []
+#                     }
+#                     for product_stock in product.product_stock:
+#                         product_stock_json = {
+#                             'id': product_stock.id,
+#                             'product_price': product_stock.product_price,
+#                             'product_offer_price': product_stock.product_offer_price,
+#                             'product_purchase_price': product_stock.product_purchase_price,
+#                             'opening_stock': product_stock.opening_stock,
+#                             'min_stock': product_stock.min_stock,
+#                             'max_stock': product_stock.max_stock,
+#                             'main_rack_no': product_stock.main_rack_no,
+#                             'sub_rack_no': product_stock.sub_rack_no,
+#                             'product_id': product_stock.fk_product_id,
+#                         }
+#                         # if jwt_current_user.is_wholesale
+#                         if user_type=='wholesale':
+#                             product_stock_json['product_price'] = product_stock.product_wholesaleprice
+#                         product_json['product_stock'].append(product_stock_json)
+#                     for product_image in product.product_image:
+#                         product_image_json = {
+#                             'id': product_image.id,
+#                             'product_image_url': product_image.product_image_url,
+#                             'product_id': product_image.fk_product_id,
+#                         }
+#                         product_json['product_images'].append(product_image_json)
+#                     products_json.append(product_json)
+
+#                 return jsonify({'return': 'success', 'products': products_json})
+#             else:
+#                 return jsonify({'return': 'no products'})
+#         except Exception as e:
+#             return jsonify({'return': 'error getting products : '+ str(e)})
+#     else:
+#         return jsonify({'return': 'error', 'message': 'method not allowed'})
 
 # @app.route('/get_products', methods=['GET'])
 # def get_products():
@@ -2022,6 +2228,7 @@ def search_products():
                             'sub_rack_no': product_stock.sub_rack_no,
                             'product_id': product_stock.fk_product_id,
                         }
+                        
                         products_stocks_json.append(product_stock_json)
                         product_json['product_stock'] = products_stocks_json
                     for product_image in product.product_image:
@@ -3819,3 +4026,12 @@ def get_payment_status():
         return jsonify({'response_data': response_data})
     else:
         return jsonify({'error': 'Failed to generate status'})
+
+
+
+
+
+@app.route('/orders', methods=['GET', 'POST'])
+def admin_orders():
+    orders = Order.query.all()
+    return render_template('/orderStatus.html', orders=orders)
