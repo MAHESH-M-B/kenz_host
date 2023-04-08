@@ -2774,7 +2774,7 @@ def getOrders(jwt_current_user):
                         'total_price': item.total_price,
                         'total_quantity': item.total_quantity,
                         'address_id': item.address_id,
-                        'status': item.status,
+                        'status': item.status.value,
                         'created_at': item.created_at,
                         'modified_at': item.modified_at,
                         'delivery_time': item.delivery_time,
@@ -4035,3 +4035,103 @@ def get_payment_status():
 def admin_orders():
     orders = Order.query.all()
     return render_template('/orderStatus.html', orders=orders)
+
+
+from flask import render_template, request, redirect, url_for, flash
+from app import app, db
+
+# List all delivery charges
+@app.route('/delivery_charge')
+def DeliveryCharge():
+    delivery_charges_list = delivery_charges.query.all()
+    return render_template('/deliverycharges.html', delivery_charges=delivery_charges_list)
+
+# Add a new delivery charge
+@app.route('/delivery_charges/add', methods=['GET', 'POST'])
+def add_delivery_charge():
+    if request.method == 'POST':
+        location_name = request.form['location_name']
+        location_zipcode = request.form['location_zipcode']
+        normal_charge = request.form['normal_charge']
+        fast_charge = request.form['fast_charge']
+        active_status = request.form['active_status']
+        delivery_charge = delivery_charges(location_name=location_name, location_zipcode=location_zipcode, normal_charge=normal_charge, fast_charge=fast_charge, active_status=active_status)
+        db.session.add(delivery_charge)
+        db.session.commit()
+        flash('Delivery charge added successfully!')
+        return redirect(url_for('DeliveryCharge'))
+    return render_template('deliverycharges.html')
+
+# Edit an existing delivery charge
+@app.route('/delivery_charges/edit/<int:charge_id>', methods=['GET', 'POST'])
+def edit_delivery_charge(charge_id):
+    delivery_charge = delivery_charges.query.get_or_404(charge_id)
+    if request.method == 'POST':
+        delivery_charge.location_name = request.form['location_name']
+        delivery_charge.location_zipcode = request.form['location_zipcode']
+        delivery_charge.normal_charge = request.form['normal_charge']
+        delivery_charge.fast_charge = request.form['fast_charge']
+        delivery_charge.active_status = request.form['active_status']
+        db.session.commit()
+        flash('Delivery charge updated successfully!')
+        return redirect(url_for('DeliveryCharge'))
+    return render_template('/edit_delivery_charge.html', delivery_charge=delivery_charge)
+
+# Delete a delivery charge
+@app.route('/delivery_charges/delete/<int:charge_id>')
+def delete_delivery_charge(charge_id):
+    delivery_charge = delivery_charges.query.get_or_404(charge_id)
+    db.session.delete(delivery_charge)
+    db.session.commit()
+    flash('Delivery charge deleted successfully!')
+    return redirect(url_for('DeliveryCharge'))
+
+
+
+# List all delivery charges
+@app.route('/coupon')
+def CouponCode():
+    coupon= Coupon.query.all()
+    return render_template('/coupon.html', coupon=coupon)
+
+# Add a new delivery charge
+@app.route('/coupon/add', methods=['GET', 'POST'])
+def add_couponcode():
+    if request.method == 'POST':
+        coupon_name = request.form['coupon_code']
+        coupon_code = request.form['coupon_code']
+        reduction_amount = request.form['reduction_amount']
+        quantity = request.form['quantity']
+        active_status = request.form['active_status']
+        coupon = Coupon(coupon_name=coupon_name, coupon_code=coupon_code, reduction_amount=reduction_amount, quantity=quantity, active_status=active_status)
+        db.session.add(coupon)
+        db.session.commit()
+        flash('Coupon added successfully!')
+        return redirect(url_for('CouponCode'))
+    return render_template('coupon.html')
+
+# Edit an existing delivery charge
+@app.route('/coupon/edit/<int:coupon_id>', methods=['GET', 'POST'])
+def edit_couponcode(coupon_id):
+    Coupons = Coupon.query.get_or_404(coupon_id)
+    if request.method == 'POST':
+        coupon_name = request.form['coupon_code']
+        coupon_code = request.form['coupon_code']
+        reduction_amount = request.form['reduction_amount']
+        quantity = request.form['quantity']
+        active_status = request.form['active_status']
+        coupon = Coupon(coupon_name=coupon_name, coupon_code=coupon_code, reduction_amount=reduction_amount, quantity=quantity, active_status=active_status)
+        db.session.add(coupon)
+        db.session.commit()
+        flash('coupon updated successfully!')
+        return redirect(url_for('CouponCode'))
+    return render_template('/editcoupon.html', coupon=Coupons)
+
+# Delete a delivery charge
+@app.route('/coupon/delete/<int:coupon_id>')
+def delete_couponcode(coupon_id):
+    coupon = Coupon.query.get_or_404(coupon_id)
+    db.session.delete(coupon)
+    db.session.commit()
+    flash('coupon deleted successfully!')
+    return redirect(url_for('CouponCode'))

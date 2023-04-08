@@ -1865,7 +1865,7 @@ Example:
 <h3>Insert wholesale User</h3>
 <ul>
     <p>Insert a new user into the database</p>
-    <p>URL: /insert_users</p>
+    <p>URL: /insert_wholesale_users</p>
     <p>Method: POST</p>
     <p>URL Content-Type: JSON</p>
 

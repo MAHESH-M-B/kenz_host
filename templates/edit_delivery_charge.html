@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Update Delivery Charge</h2>
+  <form method="POST" action="{{ url_for('edit_delivery_charge', charge_id=delivery_charge.charge_id) }}">
+    <label for="location_name">Location Name:</label>
+    <input type="text" name="location_name" value="{{ delivery_charge.location_name }}"><br><br>
+    <label for="location_zipcode">Location Zipcode:</label>
+    <input type="text" name="location_zipcode" value="{{ delivery_charge.location_zipcode }}"><br><br>
+    <label for="normal_charge">Normal Charge:</label>
+    <input type="text" name="normal_charge" value="{{ delivery_charge.normal_charge }}"><br><br>
+    <label for="fast_charge">Fast Charge:</label>
+    <input type="text" name="fast_charge" value="{{ delivery_charge.fast_charge }}"><br><br>
+    <label for="active_status">Active Status:</label>
+    <select name="active_status">
+      <option value="1" {% if delivery_charge.active_status == 1 %}selected{% endif %}>Active</option>
+      <option value="0" {% if delivery_charge.active_status == 0 %}selected{% endif %}>Inactive</option>
+    </select><br><br>
+    <input type="submit" value="Update Delivery Charge">
+  </form>
+{% endblock %}

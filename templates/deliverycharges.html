@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="mt-4 mb-4">Delivery Charges</h1>
+
+    <!-- List of all delivery charges -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Location Name</th>
+          <th>Zipcode</th>
+          <th>Normal Charge</th>
+          <th>Fast Charge</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for delivery_charge in delivery_charges %}
+          <tr>
+            <td>{{ delivery_charge.location_name }}</td>
+            <td>{{ delivery_charge.location_zipcode }}</td>
+            <td>{{ delivery_charge.normal_charge }}</td>
+            <td>{{ delivery_charge.fast_charge }}</td>
+            <td>
+              <a href="{{ url_for('edit_delivery_charge', charge_id=delivery_charge.charge_id) }}" class="btn btn-sm btn-primary">Edit</a>
+              <a href="{{ url_for('delete_delivery_charge', charge_id=delivery_charge.charge_id) }}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Form to add new delivery charge -->
+    <h3 class="mt-4 mb-4">Add Delivery Charge</h3>
+    <form method="POST" action="{{ url_for('add_delivery_charge') }}">
+      <div class="form-group">
+        <label for="location_name">Location Name</label>
+        <input type="text" class="form-control" id="location_name" name="location_name" required>
+      </div>
+      <div class="form-group">
+        <label for="location_zipcode">Zipcode</label>
+        <input type="number" class="form-control" id="location_zipcode" name="location_zipcode" required>
+      </div>
+      <div class="form-group">
+        <label for="normal_charge">Normal Charge</label>
+        <input type="number" class="form-control" id="normal_charge" name="normal_charge" required>
+      </div>
+      <div class="form-group">
+        <label for="fast_charge">Fast Charge</label>
+        <input type="number" class="form-control" id="fast_charge" name="fast_charge" required>
+      </div>
+      <div class="form-group">
+        <label for="active_status">Active Status</label>
+        <select class="form-control" id="active_status" name="active_status" required>
+          <option value="1">Active</option>
+          <option value="0">Inactive</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Delivery Charge</button>
+    </form>
+  </div>
+{% endblock %}

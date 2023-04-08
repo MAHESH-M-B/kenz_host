@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="mt-4 mb-4">coupon codes</h1>
+
+    <!-- List of all delivery charges -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>coupon_name</th>
+          <th>coupon_code</th>
+          <th>reduction_amount</th>
+          <th>quantity</th>
+          <th>active_status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for coupon in coupon %}
+          <tr>
+            <td>{{ coupon.coupon_name }}</td>
+            <td>{{ coupon.coupon_code }}</td>
+            <td>{{ coupon.reduction_amount }}</td>
+            <td>{{ coupon.quantity }}</td>
+            <td>{{ coupon.active_status }}</td>
+            <td>
+              <a href="{{ url_for('edit_couponcode', coupon_id=coupon.coupon_id) }}" class="btn btn-sm btn-primary">Edit</a>
+              <a href="{{ url_for('delete_couponcode',coupon_id=coupon.coupon_id) }}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Form to add new delivery charge -->
+    <h3 class="mt-4 mb-4">Add Coupon Code</h3>
+    <form method="POST" action="{{ url_for('add_couponcode') }}">
+      <div class="form-group">
+        <label for="location_name">coupon_name</label>
+        <input type="text" class="form-control" id="coupon_name" name="coupon_name" required>
+      </div>
+      <div class="form-group">
+        <label for="location_zipcode">coupon_code</label>
+        <input type="number" class="form-control" id="coupon_code" name="coupon_code" required>
+      </div>
+      <div class="form-group">
+        <label for="normal_charge">reduction_amount</label>
+        <input type="number" class="form-control" id="reduction_amount" name="reduction_amount" required>
+      </div>
+      <div class="form-group">
+        <label for="fast_charge">quantity</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" required>
+      </div>
+      <div class="form-group">
+        <label for="active_status">Active Status</label>
+        <select class="form-control" id="active_status" name="active_status" required>
+          <option value="1">Active</option>
+          <option value="0">Inactive</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Coupon Code</button>
+    </form>
+  </div>
+{% endblock %}
