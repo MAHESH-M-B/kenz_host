@@ -8,13 +8,13 @@
     <label for="location_zipcode">coupon_code:</label>
     <input type="text" name="coupon_code" value="{{ coupon.coupon_code }}"><br><br>
     <label for="normal_charge">reduction_amount:</label>
-    <input type="text" name="reduction_amount" value="{{ coupon...reduction_amount }}"><br><br>
-    <label for="fast_charge">Fast Charge:</label>
-    <input type="text" name="fast_charge" value="{{ delivery_charge.fast_charge }}"><br><br>
+    <input type="text" name="reduction_amount" value="{{ coupon.reduction_amount }}"><br><br>
+    <label for="fast_charge">quantity:</label>
+    <input type="text" name="quantity" value="{{ coupon.quantity }}"><br><br>
     <label for="active_status">Active Status:</label>
     <select name="active_status">
-      <option value="1" {% if delivery_charge.active_status == 1 %}selected{% endif %}>Active</option>
-      <option value="0" {% if delivery_charge.active_status == 0 %}selected{% endif %}>Inactive</option>
+      <option value="True" {% if coupon.active_status == True %}selected{% endif %}>Active</option>
+      <option value="False" {% if coupon.active_status == False %}selected{% endif %}>Inactive</option>
     </select><br><br>
     <input type="submit" value="Update Delivery Charge">
   </form>

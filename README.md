@@ -1663,6 +1663,75 @@ Example:
         "active_status": 1
     }
 
+
+<h3>6.get coupons</h3>
+<ul>
+    <p>/coupons</p>
+    <p>URL: /coupons</p>
+    <p>Method : GET</p>
+    <p>Example : https://kenz-food.herokuapp.com/coupons</p>
+
+    INPUT Body for post: JSON Object
+    Example:
+    {
+        "coupons": [
+            {
+            "active_status": true,
+            "coupon_code": "FIRST10",
+            "coupon_id": 1,
+            "coupon_name": "10% off your first purchase",
+            "created_at": null,
+            "quantity": 22,
+            "reduction_amount": 10.0
+            },
+            {
+            "active_status": true,
+            "coupon_code": "FIRST110",
+            "coupon_id": 3,
+            "coupon_name": "10% off your first purchase",
+            "created_at": null,
+            "quantity": 50,
+            "reduction_amount": 10.0
+            },
+            {
+            "active_status": true,
+            "coupon_code": "FIRST1e10",
+            "coupon_id": 6,
+            "coupon_name": "10% off your first purchase",
+            "created_at": null,
+            "quantity": 50,
+            "reduction_amount": 10.0
+            },
+            {
+            "active_status": true,
+            "coupon_code": "FIRS10",
+            "coupon_id": 7,
+            "coupon_name": "10% off your first purchase",
+            "created_at": null,
+            "quantity": 50,
+            "reduction_amount": 10.0
+            },
+            {
+            "active_status": true,
+            "coupon_code": "FIRST11",
+            "coupon_id": 18,
+            "coupon_name": "10% off your first purchase",
+            "created_at": null,
+            "quantity": 49,
+            "reduction_amount": 10.0
+            },
+            {
+            "active_status": false,
+            "coupon_code": "FIooo",
+            "coupon_id": 11,
+            "coupon_name": "FIooo",
+            "created_at": null,
+            "quantity": 50,
+            "reduction_amount": 10.0
+            }
+        ]
+    }
+
 <h3>7.Add User Address</h3>
 <ul>
     <p>Add a new address for a user</p>

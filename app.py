@@ -148,6 +148,25 @@ class Users(db.Model, UserMixin):
     order_br = db.relationship('Order', backref='order_br')
     # order_details_br = db.relationship('OrderDetails', backref='order_details_br')
     # payment_details_br = db.relationship('PaymentDetails', backref='payment_details_br')
+    user_coupons = db.relationship('UserCoupon', backref=db.backref('users', lazy=True))
+
+class UserCoupon(db.Model):
+    __tablename__ = 'user_coupons'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    coupon_id = db.Column(db.Integer, db.ForeignKey('coupons.coupon_id'), primary_key=True)
+
+
+class Coupon(db.Model):
+    __tablename__ = 'coupons'
+    coupon_id = db.Column(db.Integer, primary_key=True)
+    coupon_name = db.Column(db.String(50), nullable=False)
+    coupon_code = db.Column(db.String(20), nullable=False, unique=True)
+    reduction_amount = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    active_status = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=True)
+    # price_reduction = db.Column(db.Float, nullable=False)
+
 
 
 
@@ -461,18 +480,22 @@ class delivery_charges(db.Model):
     created_at = db.Column(db.DateTime, nullable=True)
 
 
-class Coupon(db.Model):
-    __tablename__ = 'coupons'
-    coupon_id = db.Column(db.Integer, primary_key=True)
-    coupon_name = db.Column(db.String(50), nullable=False)
-    coupon_code = db.Column(db.String(20), nullable=False, unique=True)
-    reduction_amount = db.Column(db.Float, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    active_status = db.Column(db.Boolean, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=True)
-    # price_reduction = db.Column(db.Float, nullable=False)
+# class Coupon(db.Model):
+#     __tablename__ = 'coupons'
+#     coupon_id = db.Column(db.Integer, primary_key=True)
+#     coupon_name = db.Column(db.String(50), nullable=False)
+#     coupon_code = db.Column(db.String(20), nullable=False, unique=True)
+#     reduction_amount = db.Column(db.Float, nullable=False)
+#     quantity = db.Column(db.Integer, nullable=False)
+#     active_status = db.Column(db.String(50), nullable=False)
+#     created_at = db.Column(db.DateTime, nullable=True)
+#     # price_reduction = db.Column(db.Float, nullable=False)
 
-
+# user_coupons = db.Table('user_coupons',
+#     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+#     db.Column('coupon_id', db.Integer, db.ForeignKey('coupons.coupon_id'), primary_key=True),
+#     db.Column('used_at', db.DateTime, nullable=True)
+# )
 
 
 
@@ -3916,12 +3939,44 @@ def delivery_charge():
 
 # coupon code 
 
+# @app.route('/apply_coupon', methods=['POST'])
+# def apply_coupon():
+#     data = request.get_json()
+#     coupon = Coupon.query.filter_by(coupon_code=data['coupon_code'], active_status=True).first()
+#     if coupon is None:
+#         return jsonify({'message': 'Invalid coupon code or coupon inactive.'}), 404
+
+#     # Calculate the new total price after applying the coupon
+#     original_price = data['price']
+#     reduction_amount = coupon.reduction_amount
+#     new_total_price = max(original_price - reduction_amount, 0)
+
+#     # Update the coupon quantity and save to the database
+#     coupon.quantity = max(coupon.quantity - 1, 0)
+#     db.session.commit()
+
+#     # Return the new total price
+#     return jsonify({'new_total_price': new_total_price}), 200
+
+
+
 @app.route('/apply_coupon', methods=['POST'])
-def apply_coupon():
+@token_required
+def apply_coupon(current_user):
     data = request.get_json()
-    coupon = Coupon.query.filter_by(coupon_code=data['coupon_code'], active_status=True).first()
+    coupon = Coupon.query.filter_by(coupon_code=data['coupon_code'], active_status="True").first()
+    print(current_user.id)
+    print(coupon.coupon_id)
     if coupon is None:
         return jsonify({'message': 'Invalid coupon code or coupon inactive.'}), 404
+
+    # Check if the user has already used this coupon
+    if UserCoupon.query.filter_by(user_id=current_user.id, coupon_id=coupon.coupon_id).first():
+        return jsonify({'message': 'Coupon already used.'}), 400
+
+    # Check if the coupon count is zero
+    if coupon.quantity == 0:
+        return jsonify({'message': 'Coupon expired.'}), 400
 
     # Calculate the new total price after applying the coupon
     original_price = data['price']
@@ -3932,8 +3987,34 @@ def apply_coupon():
     coupon.quantity = max(coupon.quantity - 1, 0)
     db.session.commit()
 
+    # Add the coupon to the user's used coupons and save to the database
+    user_coupon = UserCoupon(user_id=current_user.id, coupon_id=coupon.coupon_id)
+    db.session.add(user_coupon)
+    db.session.commit()
+
     # Return the new total price
     return jsonify({'new_total_price': new_total_price}), 200
+
+@app.route('/coupons', methods=['GET'])
+def get_coupons():
+    coupons = Coupon.query.all()
+    coupon_list = []
+
+    for coupon in coupons:
+        coupon_data = {
+            'coupon_id': coupon.coupon_id,
+            'coupon_name': coupon.coupon_name,
+            'coupon_code': coupon.coupon_code,
+            'reduction_amount': coupon.reduction_amount,
+            'quantity': coupon.quantity,
+            'active_status': coupon.active_status,
+            'created_at': coupon.created_at
+        }
+        coupon_list.append(coupon_data)
+
+    return jsonify({'coupons': coupon_list})
+
+
 
 
 
@@ -4098,7 +4179,7 @@ def CouponCode():
 @app.route('/coupon/add', methods=['GET', 'POST'])
 def add_couponcode():
     if request.method == 'POST':
-        coupon_name = request.form['coupon_code']
+        coupon_name = request.form['coupon_name']
         coupon_code = request.form['coupon_code']
         reduction_amount = request.form['reduction_amount']
         quantity = request.form['quantity']
